@@ -1,0 +1,1 @@
+La diferencia es que en el programa 4a las variables son declaradas globalmente y pueden ser usadas por el procedure, mientras que el 4b no son accesibles

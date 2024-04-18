@@ -1,0 +1,1 @@
+El programa imprimira 21 {variables b y a de valor 2 y 1 juntas} y luego llamara al procedure e imprimira 3.

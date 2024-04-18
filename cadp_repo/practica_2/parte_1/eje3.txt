@@ -1,0 +1,1 @@
+El error esta en intentar llamar a una variable local del procedure en el cuerpo global del programa

@@ -1,0 +1,1 @@
+El programa imprime 3 31, dado que el procedure modifica la variable global
