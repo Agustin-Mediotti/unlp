@@ -1,1 +1,1 @@
-El error es que la funcion requiere un parametro y en la llamada de la funcion no esta siendo pasada la variable
+No se inicializada la variable 'a' en el cuerpo del programa, aunque no se considera un error.

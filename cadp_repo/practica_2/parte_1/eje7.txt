@@ -1,0 +1,2 @@
+a) La llamada a la funcion no recibe ningun parametro
+b) Podria asignarse el valor que retorna la funcion a una variable y asi no llamarla 2 veces.
