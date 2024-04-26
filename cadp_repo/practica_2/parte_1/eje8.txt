@@ -1,0 +1,7 @@
+a) 
+  i) El programa principal no puede invocar a la funcion porque esta por fuera de su alcance.
+  ii) Para solucionar el problema se deberia sacar la funcion del procedimiento para que sea de alcance global y usar un parametro por valor.
+b)
+  i) La funcion no contempla el resto de valores ascii como numeros y otros caracteres.
+  ii) Va a imprimir en pantalla que es una minuscula.
+  iii) Se deberia agregar un bloque else que contemple los caracteres restantes.

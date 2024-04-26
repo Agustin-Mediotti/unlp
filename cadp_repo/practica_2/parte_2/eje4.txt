@@ -1,0 +1,5 @@
+1. linea 2, la variable salario deberia ser pasada por referencia.
+2. linea 10, 'maxSalario' deberia ser un parametro pasado por referencia
+3. linea 23, los parametros se pasan al revez
+4. linea 24, la variable 'maxSalario' debe ser pasado como parametro
+5. linea 14, falta un ;

@@ -1,0 +1,3 @@
+a) El programa imprime 25
+b) El programa imprimiria 10
+c) El programa quedaria en un bucle infinito ya que alteraria el valor del iterador

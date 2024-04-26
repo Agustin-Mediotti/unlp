@@ -1,0 +1,6 @@
+1. la variable 'i' en el procedure 'sumar' no esta declarada en la linea 5.
+2. la variable 'suma' no esta inicializada en la linea 7.
+3. a la linea 3 le falta un ;
+4. la variable 'result' deberia ser pasado como parametro en la linea 17.
+5. en la linea 3 el parametro 'c' deberia ser pasado por referencia.
+6. en la linea 20 el 'or' deberia ser un 'and'.

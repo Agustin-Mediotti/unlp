@@ -1,0 +1,1 @@
+a) El programa va a imprimir: 'Pares: 4, Impares: 4'.
