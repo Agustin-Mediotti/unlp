@@ -1,0 +1,2 @@
+a. El programa imprime num1=9
+b. El programa imprime num2=12
