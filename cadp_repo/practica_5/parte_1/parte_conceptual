@@ -1,0 +1,11 @@
+1) Como memoria estatica se define como la parte de memoria de la CPU donde se almacenan variables que en el momento de la declaracion ya se sabe cuanta memoria van a utilizar
+y esa memoria no va a cambiar durante la ejecucion del programa
+
+2) Memoria dinamica es el espacio de memoria de la CPU donde se almacenan variables que desconocen el total de memoria a utilizar, este espacio de memoria debe ser reservado y
+liberado una vez termiado su uso
+
+3) Un puntero es un tipo de dato que hace referencia a una direccion de memoria dinamica donde se almancena un tipo de dato que debe ser declarado.
+
+4) La operacion new() aplicada a una variable tipo puntero le indica al SO que debe reservar una direccion de memoria dinamica y la asocia a la variable.
+
+5) La operacion dispose() aplicada a una var tipo puntero le indica al SO que la direccion de memoria ya no es usada y libera el espacio.
