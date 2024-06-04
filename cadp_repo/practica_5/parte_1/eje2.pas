@@ -17,10 +17,10 @@ var
   prod: producto;
 
 begin
-  writeln(sizeof(p), ' bytes'); // 8 bytes -> puntero de 4bytes
-  writeln(sizeof(prod), ' bytes'); // 24 bytes -> record (integer: 2bytes + string[9]: 10bytes + real: 4bytes)
+  writeln(sizeof(p), ' bytes'); // 8 bytes -> puntero de 8bytes
+  writeln(sizeof(prod), ' bytes'); // 24 bytes -> record (integer: 2bytes + string[9]: 10bytes + real: 8bytes + record : 4bytes)
   new(p);
-  writeln(sizeof(p), ' bytes'); // 8 bytes -> puntero de 4bytes
+  writeln(sizeof(p), ' bytes'); // 8 bytes -> puntero de 8bytes
   p^.codigo := 1;
   p^.descripcion := 'nuevo producto';
   writeln(sizeof(p^), ' bytes'); // 24 bytes -> record..

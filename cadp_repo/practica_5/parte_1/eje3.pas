@@ -13,7 +13,7 @@ var
   i:integer;
 
 begin
-  writeln(sizeof(n), ' bytes'); // 8bytes
+  writeln(sizeof(n), ' bytes'); // 8bytes -> puntero
   writeln(sizeof(num), ' bytes'); // 20000bytes -> array[10k: integer] = 2bytes * 10k
   new(n);
   writeln(sizeof(n^), ' bytes'); // 20000bytes
