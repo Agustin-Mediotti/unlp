@@ -31,3 +31,9 @@ Begin
   {¿Cuánta memoria disponible hay ahora? (V)}
 end.
 
+{
+  (II) -> no varia la cantidad de memoria porque la variable 'alguien' es de tipo estatica.
+  (III) -> 400k - record(1+26+41+8+4: 80) = 320k bytes
+  (IV) -> 320k bytes (no hay cambios)
+  (V) -> 400k bytes (se libera la memoria)
+}

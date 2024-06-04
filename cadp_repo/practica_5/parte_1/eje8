@@ -1,0 +1,5 @@
+a) hasta la linea 18 ocupa 50 bytes (20*2 + 8 + 2)
+b) hasta la linea 20 ocupa 50 bytes
+c) hasta la linea 23 ocupa 73 bytes (20*2 + 8 + 2 + 20*2)
+d) hasta la linea 11 ocupa 0 bytes porque no hay variables declaradas
+e) hasta la linea 25 ocupa 121 bytes
