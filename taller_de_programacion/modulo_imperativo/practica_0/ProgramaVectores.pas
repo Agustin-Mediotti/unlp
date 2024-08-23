@@ -10,6 +10,7 @@ type
 function rnd(min,max:integer):integer;
 var num:integer;
 begin
+  num:=0;
   while (num < min) do
     num:=random(max);
   rnd:=num;

@@ -3,6 +3,7 @@ program ProgramaNumAleatorio;
 function rnd(A, B: integer):integer;
 var ale: integer;
 begin
+  num:=0;
   while (ale < A) do
     ale := random (B); {devuelve un valor aleatorio en el intervalo A..B}
   rnd:= ale;
