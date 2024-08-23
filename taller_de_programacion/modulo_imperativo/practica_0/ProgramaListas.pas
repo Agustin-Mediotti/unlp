@@ -58,12 +58,16 @@ begin
 end;
 
 var
-  L:lista;
+  L:lista; elemento:integer;
 begin
   randomize;
 
   L:=nil;
   CargarLista(L);
   ImprimirLista(L);
-  BuscarElemento(L, test);
+  readln(elemento);
+  if  BuscarElemento(L, elemento) then
+    writeln('El elemento existe en la lista.')
+  else
+    writeln('El elemento no se encuentra en la lista.');
 end.
