@@ -31,7 +31,7 @@ procedure CargarLista(var L:lista);
 var aux: integer;
 begin
   aux:=rnd(100,150);
-  while aux <> 120 do begin
+  while aux <> target do begin
     AgregarAdelante(L,aux);
     aux:=rnd(100,150);
   end;
@@ -45,6 +45,18 @@ begin
   end;
 end;
 
+function BuscarElemento(L:lista; e:integer):boolean;
+var existe: boolean;
+begin
+  existe:=false;
+  while (L <> nil) and (not existe) do begin
+    if L^.dato = e then
+      existe:=true;
+    L:=L^.sig;
+  end;
+  Buscarelemento:=existe;
+end;
+
 var
   L:lista;
 begin
@@ -52,5 +64,6 @@ begin
 
   L:=nil;
   CargarLista(L);
-  ImprimirLista(L); 
+  ImprimirLista(L);
+  BuscarElemento(L, test);
 end.
