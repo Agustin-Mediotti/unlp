@@ -14,7 +14,7 @@ h. Un módulo que muestre la información obtenida en el punto g).
 
 program Clase1MI;
 const dimF = 50;
-type dias = 1..31;
+type dias = 0..31;
      rango1 = 0..15;
      rango2 = 1..99;
      rango3 = 0..dimF;
@@ -24,9 +24,13 @@ type dias = 1..31;
 				cantidad: rango2;
 			 end;
 	 vector = array [1..dimF] of venta;
+	 elemento = record
+	  codigoP: rango1;
+	             cantTotal: integer;
+	            end;
 	 lista = ^nodo;
 	 nodo = record
-	          dato: venta;
+	          dato: elemento;
 	          sig: lista;
 	        end;
 
@@ -107,6 +111,7 @@ begin
    v[i] := item;
  end;
 end;
+
 procedure Eliminar (var v: vector; var dimL: rango3; valorInferior, valorSuperior: rango1);
 
   function BuscarPosicion (v: vector; dimL: rango3; elemABuscar: rango1): rango3;
@@ -141,21 +146,24 @@ end;
 
 procedure GenerarLista (v: vector; dimL: rango3; var L: lista);
 
-  procedure AgregarAdelante (var L: lista; elem: venta);
+  procedure AgregarAtras (var L, ult: lista; elem: elemento);
   begin
-    { Completar }
-  end;
-  
-  function Cumple (num: rango1): boolean;
-  begin
-    { Completar }
-  end;
-  
-var i: rango3; 
+  end
+    
+var i: rango3; ult: lista; e: elemento;
 begin
-  L:= nil;
-  for i:= dimL downto 1 do 
-    if Cumple (v[i].codigoP) then AgregarAdelante (L, v[i]);
+  L:= nil; ult:= nil; i:= 1;
+  while (i<= dimL) do
+  begin
+    e.codigoP:=  v[i].codigoP;
+    e.cantTotal:= 0;
+    while ((i<= dimL) and (e.codigoP =  v[i].codigoP)) do
+    begin
+      e.cantTotal:= e.cantTotal + v[i].cantidad;
+      i:= i + 1;
+    end;
+    AgregarAtras (L, ult, e);
+  end;
 end; 
 
 procedure ImprimirLista (L: lista);
