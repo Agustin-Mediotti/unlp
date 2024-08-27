@@ -111,8 +111,11 @@ begin
 end;
 
 procedure ImprimirPreciosOrdenados(vec: vec_rubro_3);
+var i: integer;
 begin
-  // TODO: Completar.
+  for i:=1 to PRODUCTOS do begin
+    writeln(vec[i].cod_prod,': $', vec[i].precio:0:2);
+  end;
 end;
 
 procedure CalcularPromedio(vec: vec_rubro_3);
