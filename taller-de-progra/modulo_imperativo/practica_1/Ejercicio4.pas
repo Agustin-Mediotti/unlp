@@ -119,8 +119,15 @@ begin
 end;
 
 procedure CalcularPromedio(vec: vec_rubro_3);
+var
+  total: real; cant, i: integer;
 begin
-  // TODO: Completar.
+  total:=0; cant:=0;
+  for i:=1 to PRODUCTOS do begin
+    total:= total + vec[i].precio;
+    cant:= cant + 1;
+  end;
+  writeln('Precio Promedio: $', total/cant:0:2);
 end;
 
 procedure ImprimirCodigosPorRubro(vec:vec_ls_prod);   // TODO: Hacer procedimineto recursivo.
