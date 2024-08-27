@@ -96,8 +96,18 @@ begin
 end;
 
 procedure OrdenarSeleccion(var vec: vec_rubro_3);
+var
+  i,j,min: integer; item: producto;
 begin
-  // TODO: Completar.
+  for i:=1 to PRODUCTOS -1 do begin
+    min:=i;
+    for j:=i+1 to PRODUCTOS do
+      if vec[j].precio < vec[min].precio then min:=j;
+
+    item:= vec[min];
+    vec[min]:= vec[i];
+    vec[i]:= item;
+  end;
 end;
 
 procedure ImprimirPreciosOrdenados(vec: vec_rubro_3);
