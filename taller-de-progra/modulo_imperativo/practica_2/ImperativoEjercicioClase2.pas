@@ -56,7 +56,10 @@ End;
 
 procedure ImprimirVectorRecursivo (v: vector; dimL: integer);
 begin    
-     {-- Completar --}     
+  if dimL > 1 then begin
+    writeln(v[dimL]);
+    ImprimirVectorRecursivo(v, dimL - 1);
+  end;
 end; 
     
 function Sumar (v: vector; dimL: integer): integer; 
@@ -76,24 +79,59 @@ begin
 end;
 
 function  ObtenerMaximo (v: vector; dimL: integer): integer;
+
+  function ObtenerMayor(x,y: integer): integer;
+    begin
+      if x > y then
+       ObtenerMayor:= x
+      else
+        ObtenerMayor:= y;
+   end;
+
+  function MaximoRecursivo(v: vector; dimL: integer): integer;
+  begin
+    if dimL = 0 then
+      MaximoRecursivo:=-1
+    else
+      MaximoRecursivo:= ObtenerMayor(v[dimL], MaximoRecursivo(v, dimL-1));
+  end;
 begin
-  {-- Completar --} 
-end;     
-     
+  ObtenerMaximo:=MaximoRecursivo(v, dimL);
+end;
+
+
 function  BuscarValor (v: vector; dimL, valor: integer): boolean;
 begin
-  {-- Completar --} 
-end; 
+  if dimL = 0 then
+    BuscarValor:= false
+  else if v[dimL] = valor then
+    BuscarValor:= true
+  else
+    BuscarValor(v, dimL-1, valor);
+end;
 
 procedure ImprimirDigitos (v: vector; dimL: integer);
-begin    
-     {-- Completar --}     
-end; 
+
+  procedure ImprimirCaracteresRecursivo(n: integer);
+  begin
+    if n DIV 10 > 0 then
+      ImprimirCaracteresRecursivo(n DIV 10);
+    write(n MOD 10, ' ');
+  end;
+
+var i: integer;
+begin
+  for i:=1 to dimL do begin
+    ImprimirCaracteresRecursivo(v[i]);
+    writeln();
+  end;
+end;
 
 var dimL, suma, maximo, valor: integer; 
     v: vector;
     encontre: boolean;
-Begin 
+Begin
+  randomize;
   CargarVector (v, dimL);
   writeln;
   if (dimL = 0) then writeln ('--- Vector sin elementos ---')
