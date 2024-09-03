@@ -82,11 +82,11 @@ procedure InformarSociosOrdenCreciente (a: arbol);
   
   procedure InformarDatosSociosOrdenCreciente (a: arbol);
   begin
-    if ((a <> nil) then begin 
-		InformarDatosSociosOrdenCreciente (a^.HI);
-		writeln ('Numero: ', a^.dato.numero, ' Nombre: ', a^.dato.nombre, ' Edad: ', a^.dato.edad);
-		InformarDatosSociosOrdenCreciente (a^.HD);
-	end;		
+    if (a <> nil) then begin 
+	  	InformarDatosSociosOrdenCreciente (a^.HI);
+	  	writeln ('Numero: ', a^.dato.numero, ' Nombre: ', a^.dato.nombre, ' Edad: ', a^.dato.edad);
+		  InformarDatosSociosOrdenCreciente (a^.HD);
+	  end;		
   end;
 
 Begin
@@ -99,16 +99,36 @@ Begin
  writeln;
 end;
 
+procedure InformarSociosOrdenDecreciente(a: arbol);
+
+  procedure InformarDatosSociosOrdenDecreciente(a: arbol);
+  begin
+    if a <> nil then begin
+      InformarDatosSociosOrdenDecreciente (a^.HD);
+      writeln('Numero: ', a^.dato.numero, ' Nombre: ', a^.dato.nombre, ' Edad: ', a^.dato.edad);
+      InformarDatosSociosOrdenDecreciente(a^.HI);
+    end;
+  end;
+
+begin
+ writeln;
+ writeln ('----- Socios en orden decreciente por numero de socio ----->');
+ writeln;
+ InformarDatosSociosOrdenDecreciente(a);
+ writeln;
+ writeln ('//////////////////////////////////////////////////////////');
+ writeln;
+end;
 
 procedure InformarNumeroSocioConMasEdad (a: arbol);
 { Informar el numero de socio con mayor edad. Debe invocar a un modulo recursivo que retorne dicho valor.  }
 
-     procedure actualizarMaximo(var maxValor,maxElem : integer; nuevoValor, nuevoElem : integer);
+  procedure actualizarMaximo(var maxValor,maxElem : integer; nuevoValor, nuevoElem : integer);
 	begin
 	  if (nuevoValor >= maxValor) then
 	  begin
-		maxValor := nuevoValor;
-		maxElem := nuevoElem;
+		  maxValor := nuevoValor;
+		  maxElem := nuevoElem;
 	  end;
 	end;
 	procedure NumeroMasEdad (a: arbol; var maxEdad: integer; var maxNum: integer);
@@ -166,16 +186,30 @@ begin
   writeln;
 end;
 
+procedure informarexistencianombresocio (a: arbol);
+begin
+  // TODO: COMPLETAR.
+end;
+
+procedure InformarCantidadSocios (a: arbol);
+begin
+  // TODO: COMPLETAR.
+end;
+
+procedure InformarPromedioDeEdad (a: arbol);
+begin
+  // TODO: COMPLETAR.
+end;
+
 var a: arbol; 
 Begin
   randomize;
   GenerarArbol (a);
   InformarSociosOrdenCreciente (a);
-  {InformarSociosOrdenDecreciente (a); COMPLETAR}
+  InformarSociosOrdenDecreciente (a);
   InformarNumeroSocioConMasEdad (a);
   AumentarEdadNumeroImpar (a);
-  { InformarExistenciaNombreSocio (a); COMPLETAR
-    InformarCantidadSocios (a); COMPLETAR
-    InformarPromedioDeEdad (a); COMPLETAR
-  }   
+  InformarExistenciaNombreSocio (a);
+  InformarCantidadSocios (a);
+  InformarPromedioDeEdad (a);
 End.
