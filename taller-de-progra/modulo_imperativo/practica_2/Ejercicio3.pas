@@ -44,22 +44,46 @@ begin
   end;
 end;
 
+procedure ImprimirVector(arr: vector; dl: integer);
+begin
+  if dl > 0 then begin
+    writeln(arr[dl]);
+    ImprimirVector(arr, dl-1);
+  end;
+end;
+
 procedure BusquedaDicotomica (arr: vector; ini,fin: indice; dato: integer; var pos: indice);
+var medio: integer;
 begin
   { TODO: El parámetro “pos” debe retornar la posición del dato o -1 si el dato no se encuentra
   en el vector. }
+  medio:= (ini+fin) div 2;
+  while (ini <= fin) and (dato <> arr[pos]) do begin
+    if (dato < arr[medio]) then
+      fin:= medio-1
+    else
+      ini:= medio+1;
+    medio:= (ini+fin) div 2;
+  end;
+  if (ini <= fin) and (dato = arr[medio]) then
+    pos:= arr[medio]
+  else
+    pos:= -1;
+  writeln('BUSQUEDA DICOTOMICA: ', pos);
 end;
 
 var
   arr: vector;
-  ini, fin, pos: indice;
+  ini, dato, pos: indice;
 
 begin
-  ini:=0;
-  fin:=0;
+  ini:=1;
+  pos:=0;
   randomize;
 
-  CargarVector(arr);                              {inciso a}
-  OrdenarVector(arr);                             {inciso b}
-  BusquedaDicotomica(arr, ini, fin, 450, pos);    {inciso c}
+  writeln('Dato a buscar: '); readln(dato);
+  CargarVector(arr);                                   {inciso a}
+  OrdenarVector(arr);                                  {inciso b}
+  ImprimirVector(arr, MAX_ARR);
+  BusquedaDicotomica(arr, ini, MAX_ARR, dato, pos);    {inciso c}
 end.
