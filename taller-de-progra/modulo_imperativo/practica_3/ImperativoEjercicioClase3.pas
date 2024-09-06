@@ -55,7 +55,7 @@ aleatoriamente. }
            a^.HI:= nil; 
            a^.HD:= nil;
          end
-    else if (elem.numero < a^.dato.numero) 
+    else if (elem.numero <= a^.dato.numero) 
          then InsertarElemento(a^.HI, elem)
          else InsertarElemento(a^.HD, elem); 
   End;
