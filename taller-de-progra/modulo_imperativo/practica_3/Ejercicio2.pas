@@ -8,9 +8,7 @@ type
   date = record
     yyyy: integer;
     mm:   integer;
-    dd:   integer;procedure CargarArbolOrdenado(var a: arbol_productos_vendidos);
-begin
-end;
+    dd:   integer; 
   end;
 
   venta = record
@@ -64,10 +62,33 @@ begin
   v.cant_unidades_vendidas:= random(50);
 end;
 
-procedure CargarArbolOrdenado(var a: arbol_productos_vendidos);
-begin
-end;
+procedure RecorrerArbol(a: arbol; var a_ventas: arbol_productos_vendidos);
 
+  procedure CargarArbolOrdenado(v: venta; var a: arbol_productos_vendidos);
+  var aux: venta_record;
+  begin
+    if a = nil then begin
+      new(a);
+      a^.HI:= nil;
+      a^.HD:= nil;
+      aux.cod_prod:= v.cod_prod;
+      aux.cant_unidades_vendidas:= v.cant_unidades_vendidas;
+      a^.dato_venta:= aux;
+    end else if a^.dato_venta.cod_prod = v.cod_prod then
+      a^.dato_venta.cant_unidades_vendidas:= a^.dato_venta.cant_unidades_vendidas + v.cant_unidades_vendidas
+    else if a^.dato_venta.cod_prod < v.cod_prod then
+      CargarArbolOrdenado(v, a^.HI)
+    else CargarArbolOrdenado(v, a^.HD);
+  end;
+   
+begin
+  if a <> nil then begin
+    RecorrerArbol(a^.HI, a_ventas);
+    CargarArbolOrdenado(a^.prod, a_ventas);
+    RecorrerArbol(a^.HD, a_ventas);
+  end;
+
+end;
 procedure AgregarArbol(var a: arbol; v: venta);
 begin
   if a = nil then begin                                                 // es el primer elemento? 
@@ -87,10 +108,9 @@ begin
     AgregarArbol(a, aux);
     LeerVenta(aux);
   end;
-    
-  CargarArbolOrdenado(a_ventas, a);      {inciso b}
+  
+  RecorrerArbol(a, a_ventas);         {inciso b}
 end;
-
 
 
 var a: arbol; a_ventas: arbol_productos_vendidos;
