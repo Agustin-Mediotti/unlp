@@ -51,25 +51,25 @@ type
     HD: arbol_productos_vendidos;
   end;
 
-procedure LeerVenta(var v: venta);
+function fechaRandom():date;
+var dt: date;
+begin
+  dt.yyyy:= random(High(rango_yyyy)); 
+  dt.mm:= random(High(rango_mm)); 
+  dt.dd:= random(High(rango_dd));
 
-  function fechaRandom():date;
-  var dt: date;
-  begin
-    dt.yyyy:= random(High(rango_yyyy)); 
-    dt.mm:= random(High(rango_mm)); 
+  while (dt.yyyy < Low(rango_yyyy)) do
+      dt.yyyy:= random(High(rango_yyyy));
+
+  while (dt.mm < Low(rango_mm)) do
+    dt.mm:= random(High(rango_mm));
+
+  while (dt.dd < Low(rango_dd))  do
     dt.dd:= random(High(rango_dd));
-  
-    while (dt.yyyy < Low(rango_yyyy)) do
-        dt.yyyy:= random(High(rango_yyyy));
+  fechaRandom:= dt;
+end;
 
-    while (dt.mm < Low(rango_mm)) do
-      dt.mm:= random(High(rango_mm));
-
-    while (dt.dd < Low(rango_dd))  do
-      dt.dd:= random(High(rango_dd));
-    fechaRandom:= dt;
-  end;
+procedure LeerVenta(var v: venta);
 begin
   v.cod_prod:= random(300);
   v.fecha:= fechaRandom();
@@ -135,6 +135,7 @@ begin
   end;
 
 end;
+
 procedure AgregarArbol(var a: arbol; v: venta);
 begin
   if a = nil then begin                                                 // es el primer elemento? 
@@ -158,12 +159,44 @@ begin
   RecorrerArbol(a, a_ventas, a_lista);         {inciso a(ii)}
 end;
 
+function totalVentasEnFecha(a: arbol; d: date):integer;
+  
+  procedure ProductosEnFecha(a: arbol; var total: integer; d: date);
+  begin
+    if a <> nil then begin
+      ProductosEnFecha(a^.HI, total, d);
+      if (a^.prod.fecha.yyyy = d.yyyy) and (a^.prod.fecha.mm = d.mm) and (a^.prod.fecha.mm = d.mm) then
+        total:= total + a^.prod.cant_unidades_vendidas;
+      ProductosEnFecha(a^.HD, total, d);
+    end;
+  end;
 
-var a: arbol; a_ventas: arbol_productos_vendidos; a_lista: arbol_lista;
+var total: integer; 
+begin
+  total:=0;
+  ProductosEnFecha(a, total, d);
+  totalVentasEnFecha:=  total;
+end;
+
+procedure ContarVentas(a: arbol; var cant: integer);
+begin
+  if a <> nil then begin
+    ContarVentas(a^.HI, cant);
+    cant:=cant+1;
+    ContarVentas(a^.HD, cant);
+  end;
+end;
+
+var a: arbol; a_ventas: arbol_productos_vendidos; a_lista: arbol_lista; fecha :date; cant: integer;
 begin
   randomize;
   a:= nil;
   a_ventas:= nil;
   a_lista:= nil;
+  cant:=0;
+  fecha:= fechaRandom();
   CargarArboles(a, a_ventas, a_lista);
+  ContarVentas(a, cant);
+  writeln(#13#10'Cantidad de ventas: ', cant);
+  writeln(#13#10'Cantidad ventas en la fecha ',fecha.dd,'/', fecha.mm,'/',fecha.yyyy,' : ', totalVentasEnFecha(a, fecha));        {inciso b}
 end.
