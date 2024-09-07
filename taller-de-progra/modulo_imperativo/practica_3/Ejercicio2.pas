@@ -21,14 +21,28 @@ type
     cod_prod: integer;
     cant_unidades_vendidas: integer;
   end;
-  
+
+  lista = ^nodo_venta;
   arbol = ^nodo;
   arbol_productos_vendidos = ^nodo_productos_vendidos;
+  arbol_lista = ^nodo_lista;
 
   nodo = record
     prod: venta;
     HI: arbol;
     HD: arbol;
+  end;
+
+  nodo_lista = record
+    dato: lista;
+    HI: arbol_lista;
+    HD: arbol_lista;
+  end;
+
+  
+  nodo_venta = record
+    dato: venta;
+    sig: lista;
   end;
 
   nodo_productos_vendidos = record
@@ -62,7 +76,39 @@ begin
   v.cant_unidades_vendidas:= random(50);
 end;
 
-procedure RecorrerArbol(a: arbol; var a_ventas: arbol_productos_vendidos);
+procedure RecorrerArbol(a: arbol; var a_ventas: arbol_productos_vendidos; var a_lista: arbol_lista);      {inciso a(iii)}
+
+  procedure InsertarVenta(var L:lista; v: venta);
+  var aux: lista;
+  begin
+    new(aux);
+    aux^.dato:= v;
+    aux^.sig:= L;
+    L:=aux;
+  end;
+
+  procedure InsertarArbolLista(v: venta; var a: arbol_lista);
+  begin
+    if a = nil then begin
+      new(a);
+      a^.HI:= nil;
+      a^.HD:= nil;
+      InsertarVenta(a^.dato, v);
+    end else if a^.dato^.dato.cod_prod = v.cod_prod then
+      InsertarVenta(a^.dato, v)
+    else if a^.dato^.dato.cod_prod < v.cod_prod then
+      InsertarArbolLista(v, a^.HI)
+    else InsertarArbolLista(v, a^.HD);
+  end;
+
+  procedure CargarArbolLista(var a: arbol_lista; av: arbol);
+  begin
+    if a <> nil then begin
+      CargarArbolLista(a^.HI, av);
+      InsertarArbolLista(av^.prod, a);
+      CargarArbolLista(a^.HD, av);
+    end;
+  end;
 
   procedure CargarArbolOrdenado(v: venta; var a: arbol_productos_vendidos);
   var aux: venta_record;
@@ -80,12 +126,12 @@ procedure RecorrerArbol(a: arbol; var a_ventas: arbol_productos_vendidos);
       CargarArbolOrdenado(v, a^.HI)
     else CargarArbolOrdenado(v, a^.HD);
   end;
-   
+
 begin
   if a <> nil then begin
-    RecorrerArbol(a^.HI, a_ventas);
+    RecorrerArbol(a^.HI, a_ventas, a_lista);
     CargarArbolOrdenado(a^.prod, a_ventas);
-    RecorrerArbol(a^.HD, a_ventas);
+    RecorrerArbol(a^.HD, a_ventas, a_lista);
   end;
 
 end;
@@ -100,23 +146,24 @@ begin
   else AgregarArbol(a^.HD, v);                                          // entonces es mas grande
 end;
 
-procedure CargarArboles(var a: arbol; var a_ventas: arbol_productos_vendidos);
+procedure CargarArboles(var a: arbol; var a_ventas: arbol_productos_vendidos; var a_lista: arbol_lista);
 var aux: venta;
 begin
   LeerVenta(aux);
-  while(aux.cod_prod <> 0) do begin   {inciso a}
+  while(aux.cod_prod <> 0) do begin   {inciso a(i)}
     AgregarArbol(a, aux);
     LeerVenta(aux);
   end;
   
-  RecorrerArbol(a, a_ventas);         {inciso b}
+  RecorrerArbol(a, a_ventas, a_lista);         {inciso a(ii)}
 end;
 
 
-var a: arbol; a_ventas: arbol_productos_vendidos;
+var a: arbol; a_ventas: arbol_productos_vendidos; a_lista: arbol_lista;
 begin
   randomize;
   a:= nil;
   a_ventas:= nil;
-  CargarArboles(a, a_ventas);
+  a_lista:= nil;
+  CargarArboles(a, a_ventas, a_lista);
 end.
