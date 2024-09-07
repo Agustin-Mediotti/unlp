@@ -136,7 +136,6 @@ begin
     CargarArbolOrdenado(a^.prod, a_ventas);
     RecorrerArbol(a^.HD, a_ventas, a_lista);
   end;
-
 end;
 
 procedure AgregarArbol(var a: arbol; v: venta);
@@ -212,6 +211,40 @@ begin
   codMasUnidadesVendidas:= mayor;
 end;
 
+function codMasventas(a: arbol_lista):integer;
+
+  function ventasEnLista(L: lista):integer;
+  var aux: integer;
+  begin
+    aux:=0;
+    while L <> nil do begin
+      aux:= aux+1;
+      L:= L^.sig;
+    end;
+  end;
+
+  procedure ContarVentasEnLista(a: arbol_lista; var total, mayor: integer);
+  var aux: integer;
+  begin
+    if a <> nil then begin
+      ContarVentasEnLista(a^.HI, mayor, total);
+      aux:= ventasEnLista(a^.dato);
+      if aux > total then begin
+        total:= aux;
+        mayor:= a^.dato^.dato.cod_prod;
+      end;
+      ContarVentasEnLista(a^.HD, mayor, total);
+    end;
+  end;
+
+var mayor, total: integer;
+begin
+  total:= 0;
+  mayor:= 0;
+  ContarVentasEnLista(a, total, mayor);
+  codMasventas:= mayor;
+end;
+
 var a: arbol; a_ventas: arbol_productos_vendidos; a_lista: arbol_lista; fecha :date; cant: integer;
 begin
   randomize;
@@ -222,7 +255,8 @@ begin
   fecha:= fechaRandom();
   CargarArboles(a, a_ventas, a_lista);
   ContarVentas(a, cant);
-  writeln(#13#10'Cantidad de ventas: ', cant);
+  writeln(#13#10'Cantidad de ventas registradas: ', cant);
   writeln(#13#10'Cantidad ventas en la fecha ',fecha.dd,'/', fecha.mm,'/',fecha.yyyy,' : ', totalVentasEnFecha(a, fecha));        {inciso b}
-  writeln(#13#10'Codigo de producto con mas unidades vendidas: ', codMasUnidadesVendidas(a_ventas));                              {inciso c}
+  writeln('Codigo de producto con mas unidades vendidas: ', codMasUnidadesVendidas(a_ventas));                                    {inciso c}
+  writeln('Codigo de producto con mayor cantidad de ventas: ', codMasventas(a_lista));                                            {inciso d}
 end.
