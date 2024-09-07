@@ -1,5 +1,9 @@
 program Ejercicio_2;
 
+const
+  COD_PROD = 30;
+  MAX_UNIDADES_VENDIDAS = 50;
+
 type
   rango_yyyy = 1950..2024;
   rango_mm = 1..12;
@@ -39,7 +43,6 @@ type
     HD: arbol_lista;
   end;
 
-  
   nodo_venta = record
     dato: venta;
     sig: lista;
@@ -71,9 +74,9 @@ end;
 
 procedure LeerVenta(var v: venta);
 begin
-  v.cod_prod:= random(300);
+  v.cod_prod:= random(COD_PROD);
   v.fecha:= fechaRandom();
-  v.cant_unidades_vendidas:= random(50);
+  v.cant_unidades_vendidas:= random(MAX_UNIDADES_VENDIDAS);
 end;
 
 procedure RecorrerArbol(a: arbol; var a_ventas: arbol_productos_vendidos; var a_lista: arbol_lista);      {inciso a(iii)}
@@ -187,6 +190,28 @@ begin
   end;
 end;
 
+function codMasUnidadesVendidas(a: arbol_productos_vendidos): integer;
+
+  procedure ContarUnidadesVendidas(a: arbol_productos_vendidos; var mayor, total: integer);
+  begin
+    if a <> nil then begin
+      ContarUnidadesVendidas(a^.HI, mayor, total);
+      if a^.dato_venta.cant_unidades_vendidas > total then begin
+        total:= a^.dato_venta.cant_unidades_vendidas;
+        mayor:= a^.dato_venta.cod_prod;
+      end;
+      ContarUnidadesVendidas(a^.HD, mayor, total);
+    end;
+  end;
+
+var mayor, total: integer;
+begin
+  total:= 0;
+  mayor:= 0;
+  ContarUnidadesVendidas(a, mayor, total);
+  codMasUnidadesVendidas:= mayor;
+end;
+
 var a: arbol; a_ventas: arbol_productos_vendidos; a_lista: arbol_lista; fecha :date; cant: integer;
 begin
   randomize;
@@ -199,4 +224,5 @@ begin
   ContarVentas(a, cant);
   writeln(#13#10'Cantidad de ventas: ', cant);
   writeln(#13#10'Cantidad ventas en la fecha ',fecha.dd,'/', fecha.mm,'/',fecha.yyyy,' : ', totalVentasEnFecha(a, fecha));        {inciso b}
+  writeln(#13#10'Codigo de producto con mas unidades vendidas: ', codMasUnidadesVendidas(a_ventas));                              {inciso c}
 end.
