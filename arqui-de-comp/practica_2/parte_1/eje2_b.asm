@@ -1,0 +1,48 @@
+PA EQU 30h
+CA EQU 32h
+
+ORG 1000h
+MSJ_ON  DB "Llave prendida", 0Ah
+MSJ_OFF DB "Llave apagada", 0Ah
+MSJ_END DB ?
+
+LF DB 0Ah
+
+
+ORG 3000h
+PNT_ON: 
+     MOV BX, offset MSJ_ON
+     MOV AL, 1
+     MOV CX, offset MSJ_OFF
+     CALL PRNT
+     RET
+
+ORG 3100h
+PNT_OFF: 
+     MOV BX, offset MSJ_OFF
+     MOV AL, 1
+     MOV CX, offset MSJ_END
+     CALL PRNT
+     RET
+
+ORG 3200h
+PRNT: INT 7
+  INC BX
+  CMP CX, BX
+  JNZ PRNT
+  RET
+
+ORG 2000h
+  MOV AL, 0FFh
+  OUT CA, AL
+
+LOOP: IN AL, PA
+  AND AL, 80h
+  JNZ ON
+  CALL PNT_OFF
+  JMP LOOP
+
+ON: CALL PNT_ON
+  JMP LOOP
+  INT 0
+END

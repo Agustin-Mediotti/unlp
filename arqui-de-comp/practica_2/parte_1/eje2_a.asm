@@ -1,0 +1,15 @@
+PB EQU 31h
+CA EQU 32h
+CB EQU 33h
+
+ORG 2000h
+  MOV AL, 00h
+  OUT CB, AL
+  MOV AL, 0FFh
+  OUT CA, AL
+
+  MOV AL, 0C3h
+  OUT PB, AL
+
+  INT 0
+END
