@@ -58,18 +58,17 @@ begin
   { TODO: El parámetro “pos” debe retornar la posición del dato o -1 si el dato no se encuentra
   en el vector. }
   medio:= (ini+fin) div 2;
-  while (ini <= fin) and (dato <> arr[pos]) do begin
-    if (dato < arr[medio]) then
-      fin:= medio-1
-    else
-      ini:= medio+1;
-    medio:= (ini+fin) div 2;
-  end;
-  if (ini <= fin) and (dato = arr[medio]) then
-    pos:= arr[medio]
-  else
-    pos:= -1;
-  writeln('BUSQUEDA DICOTOMICA: ', pos);
+  
+  if (arr[medio] = dato) then
+    pos:= medio
+  else begin
+    if arr[medio] > dato then
+      BusquedaDicotomica(arr, ini, medio, dato, pos)
+    else if arr[medio] < dato then
+      BusquedaDicotomica(arr, medio, fin, dato, pos)
+      else
+     pos:=-1;
+ end;
 end;
 
 var
