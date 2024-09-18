@@ -2,3 +2,7 @@ cloned_repos/
 
 # Pascal
 *.o
+
+# Java
+*/build/
+*/dist/
