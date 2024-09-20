@@ -4,5 +4,5 @@ cloned_repos/
 *.o
 
 # Java
-*/build/
-*/dist/
+**build/
+**dist/
