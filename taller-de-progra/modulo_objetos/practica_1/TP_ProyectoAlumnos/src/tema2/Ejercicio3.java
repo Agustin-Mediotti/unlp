@@ -32,7 +32,6 @@ public class Ejercicio3 {
                 casting[dia][turno] = persona;
                 turno++;
                 persona = leerPersona(persona);
-//                persona.toString();
             }
             dia++;
         }
