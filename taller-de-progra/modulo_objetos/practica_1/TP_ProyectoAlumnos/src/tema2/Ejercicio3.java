@@ -36,10 +36,10 @@ public class Ejercicio3 {
             dia++;
         }
 
-        
+       // inciso b
         for (i = 0; i < 5; i++) {
             for (j = 0; j< 8; j++) {
-                if (casting[i][j] != null) System.out.println(casting[i][j].toString());
+                if (casting[i][j] != null) System.out.println("dia: " + (i+1) + " turno: " + (j+1) + " nombre: " + casting[i][j].getNombre());
             } 
         }
     }
