@@ -42,4 +42,10 @@ public class Habitacion {
     public void setCostoPorNoche(double precio) {
         this.costoPorNoche = precio;
     }
+
+    public double getCostoPorNoche() {
+        return this.costoPorNoche;
+    }
+    
+    
 }

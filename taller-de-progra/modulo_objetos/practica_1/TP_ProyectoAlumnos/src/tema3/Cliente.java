@@ -1,18 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * NOTAS: Reúse la clase Persona. Para cada método solicitado piense a qué clase debe
+ * delegar la responsabilidad de la operación.
  */
 package tema3;
+
+import tema2.Persona;
 
 /**
  *
  * @author Alumno
  */
-public class Cliente {
+public class Cliente extends Persona {
     private String nombre;
     private int DNI;
-    private  int edad;
+    private int edad;
 
     public Cliente(String nombre, int DNI, int edad) {
         this.nombre = nombre;

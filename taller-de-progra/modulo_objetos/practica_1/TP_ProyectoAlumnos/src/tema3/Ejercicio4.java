@@ -12,9 +12,10 @@ package tema3;
 public class Ejercicio4 {
     public static void main(String[] args) {
         Hotel california = new Hotel(5);
+        Cliente nuevoCliente = new Cliente("Vitto Agustin Mediotti", 39509979, 28);
         
-        
-        
+        california.setNuevaReserva(nuevoCliente, 3);
+        System.out.println(california.getHabitaciones()[3].isOcupada());
         System.out.println(california.toString());
     }
 }

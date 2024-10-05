@@ -5,8 +5,6 @@
  */
 package tema3;
 
-import java.util.Arrays;
-
 /**
  *
  * @author netcreature
@@ -18,6 +16,10 @@ public class Hotel {
     public Hotel(int maxHabitaciones) {
         this.maxHabitaciones = maxHabitaciones;
         this.habitaciones = new Habitacion[maxHabitaciones];
+        
+        for (int i = 0; i < maxHabitaciones; i++) {
+            habitaciones[i] = new Habitacion();
+        }
     }
 
     public int getMaxHabitaciones() {
@@ -35,7 +37,12 @@ public class Hotel {
     }
     
     public String toString() {
-        return Arrays.toString(habitaciones);
+        String aux="";
+        for (int i = 0; i < maxHabitaciones; i++) {
+            String reserva = habitaciones[i].isOcupada() ? " Ocupada. Cliente: " + habitaciones[i].getReserva().getNombre() : "Libre ";
+            aux += "Habitacion " + i + " $" + habitaciones[i].getCostoPorNoche() + " " + reserva;
+        }
+        return aux;
     }
     
     public void setNuevaReserva(Cliente nuevoCliente, int habitacion) {
