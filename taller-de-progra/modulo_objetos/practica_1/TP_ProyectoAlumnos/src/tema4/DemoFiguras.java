@@ -28,8 +28,8 @@ public class DemoFiguras {
         System.out.println(cir.toString());
         cir.despintar();
         System.out.println(cir.toString());
+        
+        Singleton.getInstance();    // clase de instancia unica
+        
     }
-    
-    
-    
 }
