@@ -7,9 +7,9 @@ package tema2;
 
 
 public class Persona {
-    private String nombre;
-    private int DNI;
-    private int edad; 
+    protected String nombre;
+    protected int DNI;
+    protected int edad; 
     
     public Persona(String unNombre, int unDNI, int unaEdad){
         nombre = unNombre;
