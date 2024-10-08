@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 package gestorproyectosunlp;
-
-import java.util.Arrays;
-
 /**
  *
  * @author netcreature
@@ -31,7 +28,7 @@ public class Proyecto {
     private int cantInvestigadores;
     
     public Proyecto(int codigo, String nombre, String nombreDirector) {
-        this.investigadores = new Investigador[50];
+        this.investigadores = new Investigador[MAXINVESTIGADORES];
         this.codigo = codigo;
         this.nombre = nombre;
         this.nombreDirector = nombreDirector;
