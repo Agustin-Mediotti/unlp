@@ -1,0 +1,64 @@
+programa eje2
+procesos
+  proceso Recolectar(ES flores: numero; ES papeles: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:= papeles+1
+  fin
+  proceso Escalon(ES flores: numero; ES papeles: numero)
+  variables
+    alto: numero
+  comenzar
+    Random(alto, 1,5)
+    flores:=0
+    papeles:=0
+    repetir alto
+      Recolectar(flores, papeles)
+      mover
+    derecha
+    Recolectar(flores, papeles)
+    mover
+    repetir 3
+      derecha
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot slave
+  variables
+    flores, papeles, cant: numero
+  comenzar
+    repetir 4
+      Escalon(flores, papeles)
+      si (flores > papeles)
+        cant:= cant+1
+    EnviarMensaje(cant, RM)
+  fin
+  robot master
+  variables
+    cant, sum: numero
+  comenzar
+    repetir 3
+      RecibirMensaje(cant, *)
+      sum:= sum+cant
+    Informar('total ',sum)
+  fin
+variables
+  R1: slave
+  R2: slave
+  R3: slave
+  RM: master
+comenzar
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(R3, ciudad)
+  AsignarArea(RM, ciudad)
+  Iniciar(RM, 1,1)
+  Iniciar(R1, 2,1)
+  Iniciar(R2, 7,1)
+  Iniciar(R3, 12,1)
+fin

@@ -1,0 +1,56 @@
+programa eje1_b
+procesos
+  proceso recolectarFlor(ES cant: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cant:=cant+1
+  fin
+  proceso recorrerAvenida(ES cant: numero)
+  comenzar
+    repetir 9
+      recolectarFlor(cant)
+      mover
+    recolectarFlor(cant)
+  fin
+areas
+  area: AreaP (1,1,1,10)
+  area2: AreaP (2,11, 2, 20)
+  area3: AreaP (2,1,2,1)
+robots
+  robot recolector
+  variables
+    id,cant : numero
+  comenzar
+    RecibirMensaje(id, R3)
+    recorrerAvenida(cant)
+    EnviarMensaje(id, R3)
+    EnviarMensaje(cant, R3)
+  fin
+  robot fiscal
+  variables
+    cant, cant2, id, id2: numero
+  comenzar
+    EnviarMensaje(1, R1)
+    EnviarMensaje(2, R2)
+    RecibirMensaje(id, *)
+    RecibirMensaje(cant, *)
+    RecibirMensaje(id2,*)
+    RecibirMensaje(cant2,*)
+    si (cant > cant2)
+      Informar(cant - cant2)
+    sino
+      Informar(cant2 - cant)
+  fin
+variables
+  R1: recolector
+  R2: recolector
+  R3: fiscal
+comenzar
+  AsignarArea(R1, area)
+  AsignarArea(R2, area2)
+  AsignarArea(R3, area3)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 2,11)
+  Iniciar(R3, 2,1)
+fin

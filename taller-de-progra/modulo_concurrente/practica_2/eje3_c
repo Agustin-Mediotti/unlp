@@ -1,0 +1,96 @@
+programa eje3_c
+procesos
+  proceso recolectarFlores(ES cant: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cant:= cant+1
+  fin
+  proceso recolectarPapeles(ES cant: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cant:=cant+1
+  fin
+  proceso recorrerCalleFlores(ES cant: numero)
+  comenzar
+    repetir 9
+      recolectarFlores(cant)
+      mover
+    recolectarFlores(cant)
+  fin
+  proceso recorrerCallePapeles(ES cant: numero)
+  comenzar
+    repetir 9
+      recolectarPapeles(cant)
+      mover
+    recolectarPapeles(cant)
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot runnerPapeles1               {A1}
+  variables
+    cant, prev, av: numero
+  comenzar
+    derecha
+    repetir 8
+      recorrerCallePapeles(cant)
+      EnviarMensaje(cant, A2)
+      RecibirMensaje(prev, A2)
+      RecibirMensaje(av, A2)
+      Pos(av, 1)
+  fin
+  robot runnerPapeles2               {A2}
+  variables
+    prev, cant, av: numero
+  comenzar
+    derecha
+    repetir 8
+      RecibirMensaje(prev, A1)
+      recorrerCallePapeles(cant)
+      EnviarMensaje(cant+prev, A1)
+      av:=PosAv+1
+      EnviarMensaje(av, A1)
+    Informar('Total A ', cant+prev)
+  fin
+  robot runnerFlores1                {B1}
+  variables
+    prev, cant, av: numero
+  comenzar
+    derecha
+    repetir 8
+      recorrerCalleFlores(cant)
+      EnviarMensaje(cant, B2)
+      RecibirMensaje(prev, B2)
+      RecibirMensaje(av, B2)
+      Pos(av, 5)
+  fin
+  robot runnerFlores2                {B2}
+  variables
+    prev, cant, av: numero
+  comenzar
+    derecha
+    repetir 8
+      RecibirMensaje(prev, B1)
+      recorrerCalleFlores(cant)
+      EnviarMensaje(prev+cant,B1)
+      av:=PosAv+1
+      EnviarMensaje(av, B1)
+    Informar('Total B ', cant+prev)
+  fin
+variables
+  A1: runnerPapeles1
+  A2: runnerPapeles2
+  B1: runnerFlores1
+  B2: runnerFlores2
+comenzar
+  AsignarArea(A1, ciudad)
+  AsignarArea(B1, ciudad)
+  AsignarArea(A2, ciudad)
+  AsignarArea(B2, ciudad)
+  Iniciar(A1, 1,1)
+  Iniciar(A2, 11,1)
+  Iniciar(B1, 1,5)
+  Iniciar(B2, 11,5)
+fin

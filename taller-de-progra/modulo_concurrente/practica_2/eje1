@@ -1,0 +1,48 @@
+programa eje1
+procesos
+  proceso recolectarFlor(ES cant: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cant:=cant+1
+  fin
+  proceso recorrerAvenida(ES cant: numero)
+  comenzar
+    repetir 9
+      recolectarFlor(cant)
+      mover
+    recolectarFlor(cant)
+  fin
+areas
+  area: AreaP (1,1,1,10)
+  area2: AreaP (2,11, 2, 20)
+robots
+  robot robot1
+  variables
+    cant, cant2: numero
+  comenzar
+    recorrerAvenida(cant)
+    EnviarMensaje(cant, R2)
+    RecibirMensaje(cant2, R2)
+    si (cant > cant2)
+      Informar(cant)
+  fin
+  robot robot2
+  variables
+    cant, cant2: numero
+  comenzar
+    recorrerAvenida(cant)
+    EnviarMensaje(cant, R1)
+    RecibirMensaje(cant2, R1)
+    si (cant > cant2)
+      Informar(cant)
+  fin
+variables
+  R1: robot1
+  R2: robot2
+comenzar
+  AsignarArea(R1, area)
+  AsignarArea(R2, area2)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 2,11)
+fin

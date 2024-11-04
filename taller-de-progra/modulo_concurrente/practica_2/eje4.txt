@@ -1,0 +1,151 @@
+programa eje4
+procesos
+  proceso IdentificarRobots
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+  fin
+  proceso AvisarRobot(E id: numero; E ok: boolean)
+  comenzar
+    si (id=1)
+      EnviarMensaje(ok,R1)
+    sino
+      si (id=2)
+        EnviarMensaje(ok,R2)
+      sino
+        si (id=3)
+          EnviarMensaje(ok,R3)
+        sino
+          si (id=4)
+            EnviarMensaje(ok,R4) 
+  fin
+  proceso AvisarFin(E ok: boolean)
+  comenzar
+    EnviarMensaje(ok, R1)
+    EnviarMensaje(ok, R2)
+    EnviarMensaje(ok, R3)
+    EnviarMensaje(ok, R4)
+  fin
+  proceso JuntarFlores(ES flores: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:= flores+1
+  fin
+  proceso JuntarPapeles(ES papeles: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:= papeles+1
+  fin
+  proceso LimpiarEsquina(ES flores: numero; ES papeles: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      JuntarFlores(flores)
+    si HayPapelEnLaEsquina
+      JuntarPapeles(papeles)
+  fin
+  proceso esMaximo(E cant: numero; E ID: numero; ES max: numero; ES ID_MAX: numero)
+  comenzar
+    si(cant>max)
+      max:=cant
+      ID_MAX:=ID
+  fin
+  proceso ActualizarMaximo(ES ID: numero; ES ID_MAX: numero; ES max: numero)
+  variables
+    cant: numero
+  comenzar
+    si (ID=1)
+      RecibirMensaje(cant,R1)
+    sino
+      si (ID=2)
+        RecibirMensaje(cant,R2)
+      sino
+        si (ID=3)
+          RecibirMensaje(cant,R3)
+        sino
+          si (ID=4)
+            RecibirMensaje(cant,R4)
+    esMaximo(cant,ID,max,ID_MAX)
+  fin
+  proceso DeclararGanador(E ID_MAX: numero)
+  variables
+    ID: numero
+  comenzar
+    ID:=1
+    repetir 4
+      si (ID=ID_MAX)
+        AvisarRobot(ID,V)
+      sino
+        AvisarRobot(ID,F)
+      ID:=ID+1
+  fin
+areas
+  cuadrante: AreaPC (25,25, 75,75)
+  areaF: AreaP (1,1, 1,1)
+  area1: AreaP(25,1,25,1)
+  area2: AreaP(30,1,30,1)
+  area3: AreaP(35,1,35,1)
+  area4: AreaP(40,1,40,1)
+robots
+  robot recolector
+  variables
+    ID, av, ca, flores, papeles, total, iniCa, iniAv: numero
+    ok, gane: boolean
+  comenzar
+    RecibirMensaje(ID,RF)
+    iniAv:= PosAv
+    iniCa:= PosCa
+    RecibirMensaje(ok,RF)
+    mientras (ok)
+      Random(av, 25,75)
+      Random(ca, 25,75)
+      Pos(av,ca)
+      LimpiarEsquina(flores, papeles)
+      Pos(iniAv,iniCa)
+      EnviarMensaje(ok, RF)
+      RecibirMensaje(ok, RF)
+    total:= flores+papeles
+    EnviarMensaje(ID,RF)
+    EnviarMensaje(total, RF)
+    RecibirMensaje(gane, RF)
+    si (gane)
+      Pos(50,50)
+  fin
+  robot fiscal
+  variables
+    cant, max, ID_MAX, ID, ID_FINAL: numero
+    ok:boolean
+  comenzar
+    IdentificarRobots
+    repetir 10
+      Random(ID, 1,4)
+      AvisarRobot(ID, V)
+      RecibirMensaje(ok,*)
+    AvisarFin(F)
+    repetir 4
+      RecibirMensaje(ID_FINAL,*)
+      ActualizarMaximo(ID_FINAL,ID_MAX,max)
+    DeclararGanador(ID_MAX)
+  fin
+variables
+  R1, R2, R3, R4: recolector
+  RF: fiscal
+comenzar
+  AsignarArea(R1, area1)
+  AsignarArea(R1, cuadrante)
+  AsignarArea(R2, area2)
+  AsignarArea(R2, cuadrante)
+  AsignarArea(R3, area3)
+  AsignarArea(R3, cuadrante)
+  AsignarArea(R4, area4)
+  AsignarArea(R4, cuadrante)
+  AsignarArea(RF, areaF)
+  Iniciar(RF,1,1)
+  Iniciar(R1,25,1)
+  Iniciar(R2,30,1)
+  Iniciar(R3,35,1)
+  Iniciar(R4,40,1)
+fin

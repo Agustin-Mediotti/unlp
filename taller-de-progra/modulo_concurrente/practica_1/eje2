@@ -1,0 +1,56 @@
+programa Ejercicio2
+procesos
+  proceso girar(E giros: numero)
+  comenzar
+    repetir giros
+      derecha
+  fin
+  proceso recolectar(ES papel: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso recorrer(ES papeles: numero)
+  comenzar
+    repetir 9
+      recolectar(papeles)
+      mover
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot tipo1
+  variables
+    p: numero
+  comenzar
+    si (PosAv = 10)
+      si (PosCa = 20)
+        girar(1)
+        recorrer(p)
+      sino
+        recorrer(p)
+    sino
+      si (PosCa = 10)
+        girar(3)
+        recorrer(p)
+      sino
+        girar(2)
+        recorrer(p)
+    Informar(p)
+  fin
+variables
+  R1: tipo1
+  R2: tipo1
+  R3: tipo1
+  R4: tipo1
+  
+comenzar
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(R3, ciudad)
+  AsignarArea(R4, ciudad)
+  Iniciar(R1, 10,10)
+  Iniciar(R2, 10,20)
+  Iniciar(R3, 20,20)
+  Iniciar(R4, 20,10)
+fin
