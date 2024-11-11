@@ -1,0 +1,88 @@
+programa eje4
+procesos
+  proceso AsignarId
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+  fin
+  proceso moverFlor(ES termine: boolean)
+  variables
+    iniAv,iniCa:numero
+  comenzar
+    iniAv:=PosAv
+    iniCa:=PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    sino
+      termine:=V
+    Pos(iniAv, iniCa)
+    LiberarEsquina(10,10)
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    si HayFlorEnLaBolsa
+      depositarFlor
+    Pos(iniAv,iniCa)
+    LiberarEsquina(11,11)
+  fin
+areas
+  areaA: AreaPC (10,10, 10,10)
+  areaB: AreaPC (11,11, 11,11)
+  areaR0: AreaP (1,1, 1,1)
+  areaR1: AreaP (9,9, 9,9)
+  areaR2: AreaP (9,10, 9,10)
+  areaR3: AreaP (9,11, 9,11)
+  areaR4: AreaP (9,12, 9,12)
+robots
+  robot robotMovedor
+  variables
+    id:numero
+    termine:boolean
+  comenzar
+    RecibirMensaje(id,R0)
+    mientras (termine = F)
+      moverFlor(termine)
+    EnviarMensaje(id, R0)
+  fin
+  robot robotFiscal
+  variables
+    id:numero
+  comenzar
+    AsignarId
+    repetir 4
+      RecibirMensaje(id,*)
+    Informar('Ultimo ', id)
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(1,1)
+    LiberarEsquina(11,11)
+  fin
+variables
+  R0: robotFiscal
+  R1,R2,R3,R4: robotMovedor
+comenzar
+  AsignarArea(R0, areaR0)
+  AsignarArea(R0, areaB)
+  AsignarArea(R1, areaR1)
+  AsignarArea(R1, areaA)
+  AsignarArea(R1, areaB)
+  AsignarArea(R2, areaR2)
+  AsignarArea(R2, areaA)
+  AsignarArea(R2, areaB)
+  AsignarArea(R3, areaR3)
+  AsignarArea(R3, areaA)
+  AsignarArea(R3, areaB)
+  AsignarArea(R4, areaR4)
+  AsignarArea(R4, areaA)
+  AsignarArea(R4, areaB)
+  Iniciar(R0, 1,1)
+  Iniciar(R1, 9,9)
+  Iniciar(R2, 9,10)
+  Iniciar(R3, 9,11)
+  Iniciar(R4, 9,12)
+fin

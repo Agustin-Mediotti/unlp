@@ -1,0 +1,126 @@
+programa eje3
+procesos
+  proceso AsignarID
+  comenzar
+    EnviarMensaje(1, R1)
+    EnviarMensaje(2, R2)
+    EnviarMensaje(3, R3)
+    EnviarMensaje(4, R4)
+  fin
+  proceso FinalizarProcesos
+  comenzar
+    EnviarMensaje(V, R1)
+    EnviarMensaje(V, R2)
+    EnviarMensaje(V, R3)
+    EnviarMensaje(V, R4)
+  fin
+  proceso EnviarPaquete(E id: numero; E av: numero; E ca: numero)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(F, R1)
+      EnviarMensaje(av, R1)
+      EnviarMensaje(ca, R1)
+    sino
+      si (id = 2)
+        EnviarMensaje(F, R2)
+        EnviarMensaje(av, R2)
+        EnviarMensaje(ca, R2)
+      sino
+        si (id = 3)
+          EnviarMensaje(F, R3)
+          EnviarMensaje(av, R3)
+          EnviarMensaje(ca, R3)
+        sino
+          si (id = 4)
+            EnviarMensaje(F, R4)
+            EnviarMensaje(av, R4)
+            EnviarMensaje(ca, R4)
+  fin
+  proceso RecogerFlor(E av: numero; E ca: numero ES cantFlores: numero; ES end: boolean)
+  variables
+    iniAv, iniCa: numero
+  comenzar
+    iniAv:=PosAv
+    iniCa:=PosCa
+    Pos(av,ca)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores+1
+    sino
+      end:= V
+    Pos(iniAv, iniCa)
+  fin
+  proceso EvaluarGanador
+  variables
+    maxF, idMax, cantF, id: numero
+  comenzar
+    maxF:=-1
+    idMax:=0
+    repetir 4
+      RecibirMensaje(id, *)
+      RecibirMensaje(cantF, *)
+      si (cantF > maxF)
+        idMax:=id
+        maxF:=cantF
+    Informar('ID ', idMax)
+    Informar('Cant ', maxF)
+  fin
+areas
+  areaR0: AreaP (1,1, 1,1)
+  areaR1: AreaP (2,1, 2,1)
+  areaR2: AreaP (3,1, 3,1)
+  areaR3: AreaP (4,1, 4,1)
+  areaR4: AreaP (5,1, 5,1)
+  areaC: AreaPC (2,2, 10,10)
+robots
+  robot robotJuntador
+  variables
+    id,av,ca,cantFlores: numero
+    end: boolean
+  comenzar
+    end:= F
+    RecibirMensaje(id, R0)
+    mientras (end = F)
+      RecibirMensaje(end, R0)
+      si (end = F)
+        RecibirMensaje(av, R0)
+        RecibirMensaje(ca, R0)
+        RecogerFlor(av, ca, cantFlores, end)
+        EnviarMensaje(end, R0)
+    EnviarMensaje(id, R0)
+    EnviarMensaje(cantFlores, R0)
+  fin
+  robot robotFiscal
+  variables
+    id,av,ca: numero
+    end: boolean
+  comenzar
+    AsignarID
+    Random(av, 2,10)
+    Random(ca, 2,10)
+    mientras (end = F)
+      Random(id, 1,4)
+      EnviarPaquete(id,av,ca)
+      RecibirMensaje(end, *)
+    FinalizarProcesos
+    EvaluarGanador
+  fin
+variables
+  R0: robotFiscal
+  R1,R2,R3,R4: robotJuntador
+comenzar
+  AsignarArea(R0, areaR0)
+  AsignarArea(R1, areaR1)
+  AsignarArea(R1, areaC)
+  AsignarArea(R2, areaR2)
+  AsignarArea(R2, areaC)
+  AsignarArea(R3, areaR3)
+  AsignarArea(R3, areaC)
+  AsignarArea(R4, areaR4)
+  AsignarArea(R4, areaC)
+  Iniciar(R0, 1,1)
+  Iniciar(R1, 2,1)
+  Iniciar(R2, 3,1)
+  Iniciar(R3, 4,1)
+  Iniciar(R4, 5,1)
+fin
