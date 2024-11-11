@@ -1,0 +1,93 @@
+programa eje1
+procesos
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:= papeles+1
+  fin
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso recorrerAvenidaFlores(ES flores: numero)
+  comenzar
+    repetir 99
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  proceso recorrerAvenidaPapeles(ES papeles: numero)
+  comenzar
+    repetir 99
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+  fin
+  proceso calcularGanador(ES t1: numero; ES t2: numero)
+  variables
+    ID, cant: numero
+  comenzar
+    repetir 4
+      RecibirMensaje(ID,*)
+      RecibirMensaje(cant,*)
+      si (ID > 2)
+        t2:=t2+cant
+      sino
+        t1:=t1+cant
+  fin
+areas
+  areaR: AreaP (2,1,3,100)
+  areaA: AreaP (98,1,99,100)
+  areaF: AreaP (1,1, 1,1)
+robots
+  robot t1
+  variables
+    ID,flores: numero
+  comenzar
+    RecibirMensaje(ID, RF)
+    recorrerAvenidaFlores(flores)
+    EnviarMensaje(ID, RF)
+    EnviarMensaje(flores, RF)
+  fin
+  robot t2
+  variables
+    ID,papeles: numero
+  comenzar
+    RecibirMensaje(ID, RF)
+    recorrerAvenidaPapeles(papeles)
+    EnviarMensaje(ID, RF)
+    EnviarMensaje(papeles, RF)
+  fin
+  robot t3
+  variables
+    ID,t1,t2: numero
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,A1)
+    EnviarMensaje(4,A2)
+    calcularGanador(t1,t2)
+    si (t1 > t2)
+      Informar('ROJO ',t1)
+    sino
+      Informar('AZUL', t2)
+  fin
+variables
+  R1,R2: t1
+  A1,A2: t2
+  RF: t3
+comenzar
+  AsignarArea(RF, areaF)
+  AsignarArea(R1, areaR)
+  AsignarArea(R2, areaR)
+  AsignarArea(A1, areaA)
+  AsignarArea(A2, areaA)
+  Iniciar(RF, 1,1)
+  Iniciar(R1, 2,1)
+  Iniciar(R2, 3,1)
+  Iniciar(A1, 98,1)
+  Iniciar(A2, 99,1)
+fin
