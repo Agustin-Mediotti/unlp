@@ -1,0 +1,128 @@
+programa modParcial
+procesos
+  proceso GenerarIDs
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(1,R2)
+    EnviarMensaje(2,R3)
+    EnviarMensaje(2,R4)
+  fin
+  proceso girar(E pasos: numero)
+  comenzar
+    repetir pasos
+      derecha
+  fin
+  proceso recolectarFlores(ES cantF: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantF:= cantF+1
+  fin
+  proceso recorrerAvenida(E pasos:numero; ES cantF: numero)
+  comenzar
+    repetir pasos
+      recolectarFlores(cantF)
+      mover
+    recolectarFlores(cantF)
+  fin
+  proceso recorrerEsquina(E esInferior: boolean; ES cantF: numero)
+  comenzar
+    si (esInferior = F)
+      girar(3)
+      recorrerAvenida(10, cantF)
+      girar(3)
+      recorrerAvenida(8, cantF)
+    sino
+      girar(1)
+      recorrerAvenida(10,cantF)
+      girar(3)
+      recorrerAvenida(8, cantF)
+  fin
+  proceso DepositarFlor
+  variables
+    iniAv,iniCa: numero
+  comenzar
+    iniAv:=PosAv
+    iniCa:=PosCa
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(iniAv,iniCa)
+    LiberarEsquina(20,20)
+  fin
+areas
+  areaR0: AreaP (30,1,30,1)
+  areaA:  AreaPC (1,1, 11,10)
+  areaB:  AreaP (13,1, 23,10)
+  areaC:  AreaPC (20,20, 20,20)
+robots
+  robot robotA
+  variables
+    id,cantF: numero
+    esInferior: boolean
+  comenzar
+    esInferior:=V
+    RecibirMensaje(id,R0)
+    recorrerEsquina(esInferior,cantF)
+    DepositarFlor
+    si (id = 1)
+      EnviarMensaje(cantF,R2)
+    sino
+      EnviarMensaje(cantF,R4)
+  fin
+  robot robotB
+  variables
+    id,cantF: numero
+    esInferior: boolean
+  comenzar
+    RecibirMensaje(id,R0)
+    esInferior:=F
+    si (id = 1)
+      RecibirMensaje(cantF,R1)
+    sino
+      RecibirMensaje(cantF,R3)
+    recorrerEsquina(esInferior,cantF)
+    DepositarFlor
+    EnviarMensaje(id,R0)
+    EnviarMensaje(cantF, R0)
+  fin
+  robot robotF
+  variables
+    maxF,idMax,id,cant: numero
+  comenzar
+    maxF:=-1
+    GenerarIDs
+    repetir 2
+      RecibirMensaje(id,*)
+      RecibirMensaje(cant,*)
+      si (cant > maxF)
+        maxF:= cant
+        idMax:= id
+    si (idMax) = 1
+      Informar('A ', maxF)
+    sino
+      Informar('B ', maxF)
+  fin
+variables
+  R0: robotF
+  R1: robotA
+  R2: robotB
+  R3: robotA
+  R4: robotB
+comenzar
+  AsignarArea(R0, areaR0)
+  AsignarArea(R1, areaA)
+  AsignarArea(R1, areaC)
+  AsignarArea(R2, areaA)
+  AsignarArea(R2, areaC)
+  AsignarArea(R3, areaB)
+  AsignarArea(R3, areaC)
+  AsignarArea(R4, areaB)
+  AsignarArea(R4, areaC)
+  Iniciar(R0, 30,1)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 11,10)
+  Iniciar(R3, 13,1)
+  Iniciar(R4, 23,10)
+fin
