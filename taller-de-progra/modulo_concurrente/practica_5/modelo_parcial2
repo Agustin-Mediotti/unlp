@@ -1,0 +1,104 @@
+programa parcial2
+procesos
+  proceso AsignarIDs
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+  fin
+  proceso Izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso ActualizarMax(ES max:numero; ES maxId: numero)
+  variables
+    id,cant:numero
+  comenzar
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(cant,R1)
+      sino
+        si(id=2)
+          RecibirMensaje(cant,R2)
+        sino
+          RecibirMensaje(cant,R3)
+      si(cant>max)
+        max:=cant
+        maxId:=id
+  fin
+  proceso JuntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso DepositarFlores(E flores: numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+  proceso AvanzarLado(E lado: numero; ES pasos: numero; ES flores: numero)
+  comenzar
+    repetir lado
+      JuntarFlores(flores)
+      mover
+      pasos:=pasos+1
+  fin
+  proceso RecorrerCuadrado(E lado: numero; ES pasos: numero; ES flores: numero)
+  comenzar
+    repetir 4
+      AvanzarLado(lado, pasos, flores)
+      Izquierda
+  fin
+areas
+  areaR0: AreaP (51,51, 51,51)
+  areaR1: AreaP (1,1, 6,50)
+  areaR2: AreaP (7,1, 13,50)
+  areaR3: AreaP (14,1, 20,50)
+  areaC:  AreaPC (50,50, 50,50)
+robots
+  robot robotCorredor
+  variables
+    id,size,pasos,flores,av,ca:numero
+  comenzar
+    RecibirMensaje(id,R0)
+    derecha
+    repetir 3
+      Random(size, 1,4)
+      RecorrerCuadrado(size,pasos,flores)
+      av:=PosAv
+      ca:=PosCa
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      DepositarFlores(flores)
+      Pos(av,ca+(size+1))
+      LiberarEsquina(50,50)
+    EnviarMensaje(id,R0)
+    EnviarMensaje(pasos,R0)
+  fin
+  robot robotFiscal
+  variables
+    max,id:numero
+  comenzar
+    AsignarIDs
+    ActualizarMax(max,id)
+    Informar(id)
+  fin
+variables
+  R0: robotFiscal
+  R1,R2,R3: robotCorredor
+comenzar
+  AsignarArea(R0, areaR0)
+  AsignarArea(R1, areaR1)
+  AsignarArea(R1, areaC)
+  AsignarArea(R2, areaR2)
+  AsignarArea(R2, areaC)
+  AsignarArea(R3, areaR3)
+  AsignarArea(R3, areaC)
+  Iniciar(R0, 51,51)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 7,1)
+  Iniciar(R3, 14,1)
+fin
