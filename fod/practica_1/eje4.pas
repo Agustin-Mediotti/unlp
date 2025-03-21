@@ -1,168 +1,280 @@
-program ejercicio_4;
 
-type
-  empleado = record
+Program ejercicio_4;
+
+Const 
+  ARCHIVO_TEXTO = 'todos_empleados.txt';
+  ARCHIVO_REPORTE = 'faltaDNIEmpleado.txt';
+
+Type 
+  empleado = Record
     num_empleado: longint;
     nombre: string;
     apellido: string;
     edad: integer;
     dni: longint;
-  end;
-  archivo_empleados = file of empleado;
+  End;
+  archivo_empleados = file Of empleado;
+  archivo_text = Text;
 
     {--------------------CONTROL DE UNICIDAD----------------------------}
 
-function VerificarNumeroEmpleado(numero: integer; var archivo: archivo_empleados): boolean;
-var emp: empleado;
-begin
+Function VerificarNumeroEmpleado(numero: integer; Var archivo: archivo_empleados
+): boolean;
+
+Var emp: empleado;
+Begin
   reset(archivo);
-  while(not EOF(archivo)) do begin
-    read(archivo, emp);
-    if(emp.num_empleado = numero) then
-      VerificarNumeroEmpleado:=true;
-  end;
+  While (Not EOF(archivo)) Do
+    Begin
+      read(archivo, emp);
+      If (emp.num_empleado = numero) Then
+        VerificarNumeroEmpleado := true;
+    End;
   close(archivo);
-  VerificarNumeroEmpleado:=false;
-end;
+  VerificarNumeroEmpleado := false;
+End;
 
-    {--------------------CARGA DE DATOS----------------------------} 
+    {--------------------BUSQUEDA INDICE DE REG.----------------------------}
 
-procedure CargarDatos(var archivo: archivo_empleados);
-var emp: empleado;
-begin
+Function BuscarIndice(Var archivo: archivo_empleados; num_empleado: integer):
+
+
+
+                                                                         integer
+;
+
+Var 
+  emp: empleado;
+Begin
+  reset(archivo);
+  While (Not EOF(archivo)) Do
+    Begin
+      read(archivo, emp);
+      If (emp.num_empleado = num_empleado) Then
+        BuscarIndice := filePos(archivo);
+    End;
+  close(archivo);
+  BuscarIndice := -1;
+End;
+
+
+    {--------------------CARGA DE DATOS----------------------------}
+
+Procedure CargarDatos(Var archivo: archivo_empleados);
+
+Var emp: empleado;
+Begin
   rewrite(archivo);
-  write('Apellido: '); readln(emp.apellido);
-  while(emp.apellido <> 'fin') do begin
-    write('Nombre: '); readln(emp.nombre);
-    write('Edad: '); readln(emp.edad);
-    write('DNI: '); readln(emp.dni);
-    write('Num. de Empleado: '); readln(emp.num_empleado);
-    write(archivo, emp);
-    writeln('Apellido: '); readln(emp.apellido);
-  end;
+  write('Apellido: ');
+  readln(emp.apellido);
+  While (emp.apellido <> 'fin') Do
+    Begin
+      write('Nombre: ');
+      readln(emp.nombre);
+      write('Edad: ');
+      readln(emp.edad);
+      write('DNI: ');
+      readln(emp.dni);
+      write('Num. de Empleado: ');
+      readln(emp.num_empleado);
+      write(archivo, emp);
+      writeln('Apellido: ');
+      readln(emp.apellido);
+    End;
   close(archivo);
-end;
+End;
 
     {--------------------BUSQUEDA DE REGISTRO----------------------------}
 
-procedure BuscarEmpleado(var archivo: archivo_empleados);
-var
+Procedure BuscarEmpleado(Var archivo: archivo_empleados);
+
+Var 
   search: string;
   emp_actual: empleado;
-begin    
+Begin
   reset(archivo);
   writeln();
-  write('Buscar empleado... '); readln(search);
+  write('Buscar empleado... ');
+  readln(search);
   writeln();
-  while(not EOF(archivo)) do begin
-    read(archivo, emp_actual);
-    if((emp_actual.nombre = search) or (emp_actual.apellido = search)) then begin
+  While (Not EOF(archivo)) Do
+    Begin
+      read(archivo, emp_actual);
+      If ((emp_actual.nombre = search) Or (emp_actual.apellido = search)) Then
+        Begin
+          write(emp_actual.nombre, ' ');
+          write(emp_actual.apellido, ' ');
+          write(emp_actual.edad, ' ');
+          write(emp_actual.dni, ' ');
+          writeln(emp_actual.num_empleado);
+        End;
+    End;
+  close(archivo);
+End;
+
+
+{--------------------IMPRIMIR LISTA DE EMPLEADOS----------------------------}
+
+Procedure ImprimirLista(Var archivo:archivo_empleados);
+
+Var emp_actual: empleado;
+Begin
+  reset(archivo);
+  writeln();
+  writeln('Imprimiendo archivo...');
+  writeln();
+  While (Not EOF(archivo)) Do
+    Begin
+      read(archivo, emp_actual);
       write(emp_actual.nombre, ' ');
       write(emp_actual.apellido, ' ');
       write(emp_actual.edad, ' ');
       write(emp_actual.dni, ' ');
       writeln(emp_actual.num_empleado);
-    end;
-  end;
-  close(archivo); 
-end;
-
-    {--------------------IMPRIMIR LISTA DE EMPLEADOS----------------------------}
-
-procedure ImprimirLista(var archivo:archivo_empleados);
-var emp_actual: empleado;
-begin    
-  reset(archivo);
-  writeln();
-  writeln('Imprimiendo archivo...');
-  writeln();
-  while(not EOF(archivo)) do begin
-    read(archivo, emp_actual);
-    write(emp_actual.nombre, ' ');
-    write(emp_actual.apellido, ' ');
-    write(emp_actual.edad, ' ');
-    write(emp_actual.dni, ' ');
-    writeln(emp_actual.num_empleado);
-  end;
+    End;
   close(archivo);
-end;
+End;
 
-    {--------------------LISTAR PROXIMOS A JUBILARSE----------------------------}
 
-procedure ListarProximosJubilacion(var archivo: archivo_empleados);
-var 
+{--------------------LISTAR PROXIMOS A JUBILARSE----------------------------}
+
+Procedure ListarProximosJubilacion(Var archivo: archivo_empleados);
+
+Var 
   por_jubilarse: integer;
   emp_actual: empleado;
-begin
-  por_jubilarse:=0;
+Begin
+  por_jubilarse := 0;
   reset(archivo);
   writeln();
-  while(not EOF(archivo)) do begin
-    read(archivo, emp_actual);
-    if(emp_actual.edad > 70) then
-      por_jubilarse:=por_jubilarse+1;
-  end;
+  While (Not EOF(archivo)) Do
+    Begin
+      read(archivo, emp_actual);
+      If (emp_actual.edad > 70) Then
+        por_jubilarse := por_jubilarse+1;
+    End;
   close(archivo);
   writeln('Próximos a jubilarse: ', por_jubilarse);
-end;
+End;
 
     {-------------------------AGREGAR EMPLEADO-------------------------------}
 
-procedure AgregarEmpleado(var archivo: archivo_empleados);
-var 
+Procedure AgregarEmpleado(Var archivo: archivo_empleados);
+
+Var 
   opcion: string;
   emp: empleado;
-begin
-  opcion:='S';
+  ok: boolean;
+Begin
+  opcion := 'S';
   reset(archivo);
   writeln();
   seek(archivo, fileSize(archivo));
-  while(opcion = 'S') do begin
-    writeln('Apellido: '); readln(emp.apellido);
-    write('Nombre: '); readln(emp.nombre);
-    write('Edad: '); readln(emp.edad);
-    write('DNI: '); readln(emp.dni);
-    write('Num. de Empleado: '); readln(emp.num_empleado);
-    while(VerificarNumeroEmpleado(emp.num_empleado, archivo)) do
-      write('Num. de Empleado: '); readln(emp.num_empleado);
-    write(archivo, emp);
-    writeln();
-    write('Queres seguir agregando registros? S/N '); readln(opcion);
-  end;
-end;
+  While (opcion = 'S') Do
+    Begin
+      writeln('Apellido: ');
+      readln(emp.apellido);
+      write('Nombre: ');
+      readln(emp.nombre);
+      write('Edad: ');
+      readln(emp.edad);
+      write('DNI: ');
+      readln(emp.dni);
+      write('Num. de Empleado: ');
+      readln(emp.num_empleado);
+      ok := VerificarNumeroEmpleado(emp.num_empleado, archivo)
+            While(ok) Do
+            Write('Num. de Empleado: ');
+      readln(emp.num_empleado);
+      write(archivo, emp);
+      writeln();
+      write('Queres seguir agregando registros? S/N ');
+      readln(opcion);
+    End;
+End;
     {-------------------------MODIFICAR EMPLEADO-------------------------------}
 
-procedure ModificarEmpleado(var archivo: archivo_empleados);
-begin
-//TODO
-end;
+Procedure ModificarEmpleado(Var archivo: archivo_empleados);
 
-    {------------------------------EXPORTAR----------------------------------------}
+Var 
+  num_empleado, indice, nueva_edad: integer;
+  emp: empleado;
+  opcion: string;
+Begin
+  reset(archivo);
+  write('Ingrese el Numero de Empleado...');
+  readln(num_empleado);
+  indice := BuscarIndice(archivo, num_empleado);
+  writeln(indice);
+  If (indice <> -1) Then
+    Begin
+      seek(archivo, indice);
+      read(archivo, emp);
+      writeln('Seleccionado: ', emp.nombre, ' ', emp.apellido, ', Edad: ', emp.
+              edad);
+      write('Modificar edad: ');
+      readln(nueva_edad);
+      write(emp.edad, ' -> ', nueva_edad, '. Confirmar cambios? S/N');
+      readln(opcion);
+      If (opcion = 'S') Then
+        write(archivo, emp);
+    End;
+  close(archivo);
+End;
 
-procedure ExportarLista(var archivo: archivo_empleados);
-begin
-//TODO
-end;
+
+{------------------------------EXPORTAR----------------------------------------}
+
+Procedure ExportarLista(Var archivo: archivo_empleados);
+
+Var 
+  archivo_export: archivo_text;
+  emp: empleado;
+Begin
+  reset(archivo);
+  rewrite(archivo_export);
+  assign(archivo_export, ARCHIVO_TEXTO);
+  While (Not EOF(archivo)) Do
+    Begin
+      read(archivo, emp);
+      writeln(archivo_export, 'Nombre: ', emp.nombre, ' Apellido: ', emp.
+              apellido, ' DNI: ', emp.dni, ' Edad: ', emp.edad,
+              ' Num. Empleado: ', emp.num_empleado);
+    End;
+  close(archivo);
+  close(archivo_export);
+End;
 
     {-------------------------GENERAR REPORTE DNI-----------------------------}
 
-procedure GenerarReporteFaltaDNI(var archivo: archivo_empleados);
-begin
-//TODO
-end;
+Procedure GenerarReporteFaltaDNI(Var archivo: archivo_empleados);
+Begin
+  //TODO
+End;
 
     {----------------------------MENU UI--------------------------------}
 
-procedure Menu(var archivo: archivo_empleados);
-var 
-  opcion:integer;
-begin
+Procedure Menu(Var archivo: archivo_empleados);
+
+Var 
+  opcion: integer;
+Begin
   writeln();
   writeln('Ingrese una opción para continuar: ');
-  writeln('1. Registro Nuevo    |   2. Buscar Empleado    |   3. Imprimir Lista   |   4. Edad Jubilatoria');
-  writeln('5. Agregar Empleado    |   6. Modificar Empleado    |   7. Exportar   |   8. Generar Reporte Sin DNI');
+  writeln(
+
+
+
+'1. Registro Nuevo    |   2. Buscar Empleado    |   3. Imprimir Lista   |   4. Edad Jubilatoria'
+  );
+  writeln(
+
+
+
+'5. Agregar Empleado    |   6. Modificar Empleado    |   7. Exportar   |   8. Generar Reporte Sin DNI'
+  );
   readln(opcion);
-  Case opcion of
+  Case opcion Of 
     1 : CargarDatos(archivo);
     2 : BuscarEmpleado(archivo);
     3 : ImprimirLista(archivo);
@@ -171,16 +283,17 @@ begin
     6 : ModificarEmpleado(archivo);
     7 : ExportarLista(archivo);
     8 : GenerarReporteFaltaDNI(archivo);
-  end;
-end;
+  End;
+End;
 
-var
+Var 
   archivo: archivo_empleados;
   path: string;
 
-begin
-  write('Nombre del Archivo --> '); readln(path);
+Begin
+  write('Nombre del Archivo --> ');
+  readln(path);
   assign(archivo, path);
-  while (true) do
+  While (true) Do
     Menu(archivo);
-end.
+End.
