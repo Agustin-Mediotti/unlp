@@ -1,8 +1,6 @@
-1214 25000.00 Drama
-El Secreto De Tus Ojos
-4521 23500.50 Terror
+2712  2.7830000000000000E+004    Drama
+El Secreto de Tus Ojos
+2171  2.6771000000000000E+004   Comedia
+Esperando La Carroza
+2817  2.8162000000000000E+004  Terror
 Cuando Acecha La Maldad
-2001 1.00 Policial
-Nueve Reinas
-4242 20000.00 Comedia
-Relatos Salvajes
