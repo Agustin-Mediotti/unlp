@@ -1,3 +1,9 @@
-1234  1.5000000000000000E+004  Motorola
-6 15  Duradero y veloz
+1234  5.4500000000000000E+005 Motorola
+250 50 Gran Autonomia
 Galaxy 12
+4567  6.0000000000000000E+005 Iphone
+29 30 Excelente cámara frontal
+14
+2255  5.0000000000000000E+004 Nokia
+0 2 Resistente y confiable
+1100
