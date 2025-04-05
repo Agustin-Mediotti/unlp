@@ -1,6 +1,8 @@
 
 Program ejercicio_7;
 
+Uses sysutils; { Para dar correcto formato al archivo de texto. }
+
 Const 
   TEXT_FILE = 'novelas.txt';
 
@@ -41,7 +43,7 @@ Begin
    While(not EOF(archivo)) Do
       Begin
          read(archivo, nov);
-         writeln(textFile, nov.codigo, ' ', nov.precio, ' ', nov.genero);
+         writeln(textFile, IntToStr(nov.codigo) + ' ' + FloatToStr(nov.precio) + ' ' + nov.genero);
          writeln(textFile, nov.nombre);
          cant:= cant+1;
       End;

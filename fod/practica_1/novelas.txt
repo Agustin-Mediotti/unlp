@@ -1,6 +1,6 @@
-2712  2.7830000000000000E+004    Drama
+2712 27830 Drama
 El Secreto de Tus Ojos
-2171  2.6771000000000000E+004   Comedia
+2171 26771 Comedia
 Esperando La Carroza
-2817  2.8162000000000000E+004  Terror
+2817 28162 Terror
 Cuando Acecha La Maldad
