@@ -13,3 +13,6 @@ cloned_repos/
 /taller-de-progra/modulo_objetos/practica_5/ParcialModelo/nbproject/private/
 /taller-de-progra/modulo_objetos/practica_5/ModeloParcial2/nbproject/private/
 /taller-de-progra/modulo_objetos/practica_5/ModeloParcial3/nbproject/private/
+
+# Rust
+**target/
