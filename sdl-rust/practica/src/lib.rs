@@ -1,4 +1,5 @@
 mod tp2;
+mod tp3;
 
 #[cfg(test)]
 mod tests {
@@ -186,5 +187,57 @@ mod tests {
             num, 3.0,
             "La variable {num} debería haber sido incrementada a 3.0"
         );
+    }
+
+    #[test]
+    fn crea_nueva_persona_sin_direccion() {
+        let persona = tp3::ej1::Persona::new("Fausto".to_string(), 11, None);
+        assert_eq!(persona.nombre, "Fausto");
+        assert_eq!(persona.edad, 11);
+        assert_eq!(persona.dir, None);
+    }
+
+    #[test]
+    fn crea_nueva_persona_con_direccion() {
+        let persona = tp3::ej1::Persona::new(
+            "Fausto".to_string(),
+            11,
+            Some("Calle Falsa 123".to_string()),
+        );
+        assert_eq!(persona.nombre, "Fausto");
+        assert_eq!(persona.edad, 11);
+        assert_eq!(persona.dir, Some("Calle Falsa 123".to_string()));
+    }
+
+    #[test]
+    fn persona_to_string_con_direccion() {
+        let persona_to_string = tp3::ej1::Persona::new(
+            "Fausto".to_string(),
+            11,
+            Some("Calle Falsa 123".to_string()),
+        )
+        .to_string();
+
+        assert_eq!(persona_to_string, "Fausto, 11, Calle Falsa 123")
+    }
+
+    #[test]
+    fn obtener_edad_de_persona() {
+        let persona = tp3::ej1::Persona::new(
+            "Fausto".to_string(),
+            11,
+            Some("Calle Falsa 123".to_string()),
+        );
+
+        assert_eq!(persona.obtener_edad(), 11);
+    }
+
+    #[test]
+
+    fn actualizar_direccion_de_persona() {
+        let mut persona = tp3::ej1::Persona::new("Fausto".to_string(), 11, None);
+        persona.actualizar_direccion("Fausto, 11, Calle Falsa 123".to_string());
+
+        assert_eq!(persona.dir, Some("Fausto, 11, Calle Falsa 123".to_string()));
     }
 }
