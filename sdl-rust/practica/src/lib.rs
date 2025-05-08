@@ -3,6 +3,8 @@ mod tp3;
 
 #[cfg(test)]
 mod tests {
+    use crate::tp3::ej2::Rectangulo;
+
     use super::*;
 
     #[test]
@@ -233,11 +235,48 @@ mod tests {
     }
 
     #[test]
-
     fn actualizar_direccion_de_persona() {
         let mut persona = tp3::ej1::Persona::new("Fausto".to_string(), 11, None);
         persona.actualizar_direccion("Fausto, 11, Calle Falsa 123".to_string());
 
         assert_eq!(persona.dir, Some("Fausto, 11, Calle Falsa 123".to_string()));
+    }
+
+    #[test]
+    fn crea_rectangulo_con_parametros_correctos() {
+        let rect = Rectangulo::new(5, 5);
+
+        assert_eq!(rect.ancho, 5);
+        assert_eq!(rect.longitud, 5);
+    }
+
+    #[test]
+    fn calcular_correctamente_area_de_rectangulo() {
+        assert_eq!(Rectangulo::new(2, 0).calcular_area(), 0);
+        assert_eq!(Rectangulo::new(1, 1).calcular_area(), 1);
+        assert_eq!(Rectangulo::new(5, 6).calcular_area(), 30);
+        assert_eq!(
+            Rectangulo::new(u32::max_value(), u32::max_value()).calcular_area(),
+            u32::max_value() as u64 * 2
+        );
+    }
+
+    #[test]
+    fn calcular_correctamente_perimetro_de_rectangulo() {
+        assert_eq!(Rectangulo::new(2, 0).calcular_perimetro(), 0);
+        assert_eq!(Rectangulo::new(1, 1).calcular_perimetro(), 1);
+        assert_eq!(Rectangulo::new(5, 6).calcular_perimetro(), 60);
+        assert_eq!(
+            Rectangulo::new(u32::max_value(), u32::max_value()).calcular_area(),
+            (u32::max_value() as u64 * 2) * 2
+        );
+    }
+
+    #[test]
+    fn identifica_cuadrado_correctamente() {
+        assert!(!Rectangulo::new(2, 0).es_cuadrado());
+        assert!(Rectangulo::new(1, 1).es_cuadrado());
+        assert!(!Rectangulo::new(5, 6).es_cuadrado());
+        assert!(Rectangulo::new(u32::max_value(), u32::max_value()).es_cuadrado());
     }
 }
