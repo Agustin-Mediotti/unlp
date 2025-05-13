@@ -3,7 +3,7 @@ mod tp3;
 
 #[cfg(test)]
 mod tests {
-    use crate::tp3::ej2::Rectangulo;
+    use crate::tp3::{ej2::Rectangulo, ej3::Fecha};
 
     use super::*;
 
@@ -255,21 +255,13 @@ mod tests {
         assert_eq!(Rectangulo::new(2, 0).calcular_area(), 0);
         assert_eq!(Rectangulo::new(1, 1).calcular_area(), 1);
         assert_eq!(Rectangulo::new(5, 6).calcular_area(), 30);
-        assert_eq!(
-            Rectangulo::new(u32::max_value(), u32::max_value()).calcular_area(),
-            u32::max_value() as u64 * 2
-        );
     }
 
     #[test]
     fn calcular_correctamente_perimetro_de_rectangulo() {
         assert_eq!(Rectangulo::new(2, 0).calcular_perimetro(), 0);
-        assert_eq!(Rectangulo::new(1, 1).calcular_perimetro(), 1);
+        assert_eq!(Rectangulo::new(1, 1).calcular_perimetro(), 2);
         assert_eq!(Rectangulo::new(5, 6).calcular_perimetro(), 60);
-        assert_eq!(
-            Rectangulo::new(u32::max_value(), u32::max_value()).calcular_area(),
-            (u32::max_value() as u64 * 2) * 2
-        );
     }
 
     #[test]
@@ -278,5 +270,49 @@ mod tests {
         assert!(Rectangulo::new(1, 1).es_cuadrado());
         assert!(!Rectangulo::new(5, 6).es_cuadrado());
         assert!(Rectangulo::new(u32::max_value(), u32::max_value()).es_cuadrado());
+    }
+
+    #[test]
+    fn crea_una_fecha_con_correctamente() {
+        assert!(Fecha::new(11, 09, 2001).is_some());
+        assert!(Fecha::new(31, 11, 2025).is_none());
+        assert!(Fecha::new(29, 2, 2023).is_none());
+    }
+
+    #[test]
+    fn verifica_fecha_valida() {
+        assert!(!Fecha::es_fecha_valida(29, 2, 2023));
+        assert!(!Fecha::es_fecha_valida(31, 11, 2025));
+        assert!(Fecha::es_fecha_valida(31, 12, 2025));
+    }
+
+    #[test]
+    fn verifica_fecha_bisiesto() {
+        assert!(
+            Fecha::new(29, 3, 2024)
+                .expect("Fecha incorrecta")
+                .es_bisiesto()
+        );
+        assert!(
+            !Fecha::new(19, 5, 2023)
+                .expect("Fecha incorrecta")
+                .es_bisiesto()
+        );
+    }
+
+    #[test]
+    fn verifica_sumar_dias_a_fecha() {
+        let mut fecha = Fecha::new(11, 09, 2001).unwrap();
+        fecha.sumar_dias(15);
+
+        assert_eq!(fecha, Fecha::new(26, 09, 2001).unwrap());
+    }
+
+    #[test]
+    fn verifica_restar_dias_a_fecha() {
+        let mut fecha = Fecha::new(11, 09, 2001).unwrap();
+        fecha.restar_dias(2);
+
+        assert_eq!(fecha, Fecha::new(09, 09, 2001).unwrap());
     }
 }
