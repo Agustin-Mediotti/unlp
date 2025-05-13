@@ -7,6 +7,7 @@ mod tests {
         ej2::Rectangulo,
         ej3::Fecha,
         ej4::{Triangulo, TrianguloTipo},
+        ej5::Producto,
     };
 
     use super::*;
@@ -360,5 +361,57 @@ mod tests {
         assert_eq!(Triangulo::new(5, 5, 5).calcular_perimetro(), 15);
         assert_eq!(Triangulo::new(2, 7, 9).calcular_perimetro(), 18);
         assert_eq!(Triangulo::new(2, 3, 5).calcular_perimetro(), 10);
+    }
+
+    #[test]
+    fn crea_nuevo_producto_correctamente() {
+        assert_eq!(
+            Producto::new("Nodemcu Esp32".to_string(), 14990.00, 3032192),
+            Producto {
+                nombre: "Nodemcu Esp32".to_string(),
+                precio_bruto: 14990.00,
+                numero_ident: 3032192
+            }
+        );
+    }
+
+    #[test]
+    fn calcula_impuestos_de_producto_correctamente() {
+        assert_eq!(
+            Producto::new("Nodemcu Esp32".to_string(), 14990.00, 3032192).calcular_impuestos(20.00),
+            14990.00 * (20.00 / 100.0)
+        );
+    }
+
+    #[test]
+    fn calcula_descuento_de_producto_correctamente() {
+        assert_eq!(
+            Producto::new("Nodemcu Esp32".to_string(), 14990.00, 3032192).aplicar_descuento(35.00),
+            14990.00 * (35.00 / 100.0)
+        );
+    }
+
+    #[test]
+    fn calcula_correctamente_precio_total_de_producto() {
+        assert_eq!(
+            Producto::new("Nodemcu Esp32".to_string(), 14990.00, 3032192)
+                .calcular_precio_total(Some(20.00), None),
+            14990.00 + (14990.00 * (20.00 / 100.0)),
+            "El precio total no se calculo como se esperaba (20% impuestos y 0% descuento)"
+        );
+
+        assert_eq!(
+            Producto::new("Nodemcu Esp32".to_string(), 14990.00, 3032192)
+                .calcular_precio_total(None, Some(35.00)),
+            14990.00 - (14990.00 * (35.00 / 100.0)),
+            "El precio total no se calculo como se esperaba (0% impuestos y 35% descuento)"
+        );
+
+        assert_eq!(
+            Producto::new("Nodemcu Esp32".to_string(), 14990.00, 3032192)
+                .calcular_precio_total(Some(20.00), Some(35.00)),
+            14990.00 - (14990.00 * (35.00 / 100.0)) + (14990.00 * (20.00 / 100.0)),
+            "El precio total no se calculo como se esperaba (20% impuestos y 35% descuento)"
+        );
     }
 }
