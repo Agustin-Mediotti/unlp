@@ -3,7 +3,11 @@ mod tp3;
 
 #[cfg(test)]
 mod tests {
-    use crate::tp3::{ej2::Rectangulo, ej3::Fecha};
+    use crate::tp3::{
+        ej2::Rectangulo,
+        ej3::Fecha,
+        ej4::{Triangulo, TrianguloTipo},
+    };
 
     use super::*;
 
@@ -314,5 +318,47 @@ mod tests {
         fecha.restar_dias(2);
 
         assert_eq!(fecha, Fecha::new(09, 09, 2001).unwrap());
+    }
+
+    #[test]
+    fn crea_nuevo_triangulo_correctamente() {
+        assert_eq!(Triangulo::new(5, 5, 5), Triangulo { x: 5, y: 5, z: 5 });
+        assert_ne!(Triangulo::new(2, 7, 3), Triangulo { x: 1, y: 1, z: 1 });
+    }
+
+    #[test]
+    fn determinar_tipo_triangulo_correctamente() {
+        assert_eq!(
+            Triangulo::new(5, 5, 5).determinar_tipo().unwrap(),
+            TrianguloTipo::Equilatero
+        );
+        assert_eq!(
+            Triangulo::new(2, 7, 1).determinar_tipo().unwrap(),
+            TrianguloTipo::Escaleno
+        );
+
+        assert_eq!(
+            Triangulo::new(2, 2, 1).determinar_tipo().unwrap(),
+            TrianguloTipo::Isosceles
+        );
+    }
+
+    #[test]
+    fn calcula_correctamente_el_area_del_rectangulo() {
+        assert_eq!(
+            Triangulo::new(5, 5, 5).calcular_area(),
+            (f64::sqrt(3.0) / 4.0) * (5.0_f64.powf(2.0))
+        );
+        assert_eq!(
+            Triangulo::new(7, 2, 6).calcular_area(),
+            (f64::sqrt(3.0) / 4.0) * (2.0_f64.powf(2.0))
+        );
+    }
+
+    #[test]
+    fn calcular_correctamente_perimetro_del_triangulo() {
+        assert_eq!(Triangulo::new(5, 5, 5).calcular_perimetro(), 15);
+        assert_eq!(Triangulo::new(2, 7, 9).calcular_perimetro(), 18);
+        assert_eq!(Triangulo::new(2, 3, 5).calcular_perimetro(), 10);
     }
 }
