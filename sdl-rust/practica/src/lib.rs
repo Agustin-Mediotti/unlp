@@ -8,6 +8,7 @@ mod tests {
         ej3::Fecha,
         ej4::{Triangulo, TrianguloTipo},
         ej5::Producto,
+        ej6::{Estudiante, Examen},
     };
 
     use super::*;
@@ -412,6 +413,73 @@ mod tests {
                 .calcular_precio_total(Some(20.00), Some(35.00)),
             14990.00 - (14990.00 * (35.00 / 100.0)) + (14990.00 * (20.00 / 100.0)),
             "El precio total no se calculo como se esperaba (20% impuestos y 35% descuento)"
+        );
+    }
+
+    #[test]
+    fn crea_nuevo_examen_correctamente() {
+        assert_eq!(
+            Examen::new("Matemática".to_owned(), 8),
+            Examen {
+                nombre_materia: "Matemática".to_owned(),
+                nota: 8
+            },
+            "El objeto Examen no se creo como se esperaba"
+        );
+    }
+
+    #[test]
+    fn crea_nuevo_estudiante_correctamente() {
+        assert_eq!(
+            Estudiante::new("Calamardo".to_owned(), 42, Vec::new()),
+            Estudiante {
+                nombre: "Calamardo".to_owned(),
+                numero_ident: 42,
+                calificaciones: Vec::new(),
+            },
+            "El objeto Estudiante no se creo como se esperaba"
+        );
+    }
+
+    #[test]
+    fn obtiene_promedio_correctamente() {
+        let mut calificaciones: Vec<Examen> = Vec::new();
+        calificaciones.push(Examen::new("Matemática".to_owned(), 8));
+        calificaciones.push(Examen::new("Historia".to_owned(), 10));
+        let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+
+        assert_eq!(
+            estudiante.obtener_promedio(),
+            9.0,
+            "El promedio no se calculo como se esperaba"
+        );
+    }
+
+    #[test]
+    fn obtiene_calificacion_mas_alta_correctamente() {
+        let mut calificaciones: Vec<Examen> = Vec::new();
+        calificaciones.push(Examen::new("Matemática".to_owned(), 8));
+        calificaciones.push(Examen::new("Historia".to_owned(), 10));
+        let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+
+        assert_eq!(
+            estudiante.obtener_calificacion_mas_alta(),
+            10,
+            "No se obtubo el elemento esperado"
+        );
+    }
+
+    #[test]
+    fn obtiene_calificacion_mas_baja_correctamente() {
+        let mut calificaciones: Vec<Examen> = Vec::new();
+        calificaciones.push(Examen::new("Matemática".to_owned(), 8));
+        calificaciones.push(Examen::new("Historia".to_owned(), 10));
+        let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+
+        assert_eq!(
+            estudiante.obtener_calificacion_mas_baja(),
+            8,
+            "No se obtubo el elemento esperado"
         );
     }
 }
