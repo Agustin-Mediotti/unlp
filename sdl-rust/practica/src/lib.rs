@@ -11,7 +11,9 @@ mod tests {
         ej6::{Estudiante, Examen},
         ej7::{Auto, ColorAuto, ConcesionarioAuto},
         ej8::{Cancion, Genero, Playlist},
+        ej9::{Atencion, Mascota, Propietario, TipoAnimal, Veterinaria},
     };
+    use std::collections::VecDeque;
 
     use super::*;
 
@@ -788,6 +790,338 @@ mod tests {
             playlist.canciones,
             Vec::<Cancion>::new(),
             "No se eliminaron todas las canciones de la playlist como se esperaba"
+        );
+    }
+
+    #[test]
+    fn crea_nueva_veterinaria_correctamente() {
+        let vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        assert_eq!(
+            vete,
+            Veterinaria {
+                nombre: "Vet01".to_owned(),
+                direccion: "44 n552".to_owned(),
+                id: 32,
+                registro_atenciones: Vec::<Atencion>::new(),
+                cola_atencion: VecDeque::<Mascota>::new(),
+                mascota_actual: None,
+            },
+            "No se creo el objeto veterinaria como se esperaba"
+        );
+    }
+
+    #[test]
+    fn agregar_a_cola_de_atencion_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        assert!(
+            vete.cola_atencion.contains(&mascota),
+            "No se agrego la mascota a la cola de atencion como se esperaba"
+        );
+    }
+
+    #[test]
+    fn agregar_a_cola_de_atencion_prioridad_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        assert!(
+            vete.cola_atencion[0] == mascota_2,
+            "No se agrego la mascota a la cola de atencion con prioridad como se esperaba"
+        );
+    }
+
+    #[test]
+    fn atender_siguiente_mascota_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.atender_siguiente_mascota();
+
+        assert!(
+            vete.cola_atencion[0] == mascota.clone(),
+            "No se quito la mascota a la cola de atencion como se esperaba"
+        );
+        assert!(
+            vete.mascota_actual == Some(mascota_2),
+            "No se agrego la mascota como mascota actual como se esperaba"
+        );
+    }
+
+    #[test]
+    fn eliminar_mascota_de_cola_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.eliminar_mascota_de_cola(mascota);
+        assert!(
+            vete.cola_atencion.len() == 1,
+            "No se elimino la mascota de la cola de atencion como se esperaba"
+        );
+    }
+
+    #[test]
+    fn registrar_atencion_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.atender_siguiente_mascota();
+        vete.registrar_atencion(
+            "Mala alimentacion".to_owned(),
+            "Mejor alimento".to_owned(),
+            Fecha::new(20, 06, 2025),
+        );
+        assert!(
+            vete.registro_atenciones.len() == 1,
+            "No se registro una nueva atencion como se esperaba"
+        );
+    }
+
+    #[test]
+    fn buscar_atencion_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.atender_siguiente_mascota();
+        vete.registrar_atencion(
+            "Mala alimentacion".to_owned(),
+            "Mejor alimento".to_owned(),
+            Fecha::new(20, 06, 2025),
+        );
+        assert!(
+            vete.buscar_atencion("Picudo".to_owned(), "Pedro".to_owned(), 726123)
+                .is_some(),
+            "No se encontro la atencion guardada en el registro como se esperaba"
+        );
+    }
+
+    #[test]
+    fn modificar_diagnostico_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.atender_siguiente_mascota();
+        vete.registrar_atencion(
+            "Mala alimentacion".to_owned(),
+            "Mejor alimento".to_owned(),
+            Fecha::new(20, 06, 2025),
+        );
+        vete.modificar_diagnostico(0, "Mal aliento".to_owned());
+        assert!(
+            vete.buscar_atencion("Picudo".to_owned(), "Pedro".to_owned(), 726123)
+                .unwrap()
+                .diagnostico_final
+                == "Mal aliento".to_owned(),
+            "No se modifico el diagnostico en la atencion registrada como se esperaba"
+        );
+    }
+
+    #[test]
+    fn modificar_fecha_proxima_visita_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.atender_siguiente_mascota();
+        vete.registrar_atencion(
+            "Mala alimentacion".to_owned(),
+            "Mejor alimento".to_owned(),
+            Fecha::new(20, 06, 2025),
+        );
+        vete.modificar_fecha_proxima_visita(0, Fecha::new(20, 05, 2025));
+        assert!(
+            vete.buscar_atencion("Picudo".to_owned(), "Pedro".to_owned(), 726123)
+                .unwrap()
+                .fecha_proxima_visita
+                == Fecha::new(20, 05, 2025),
+            "No se modifico la fecha de proxima visita en la atencion registrada como se esperaba"
+        );
+    }
+
+    #[test]
+    fn eliminar_atencion_correctamente() {
+        let mut vete = Veterinaria::new("Vet01".to_owned(), "44 n552".to_owned(), 32);
+        let mascota = Mascota {
+            nombre: "Rodolfo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Perro,
+            propietario: Propietario {
+                nombre: "Fabian".to_owned(),
+                direccion: "127bis y 22".to_owned(),
+                telefono: 6271254,
+            },
+        };
+        let mascota_2 = Mascota {
+            nombre: "Picudo".to_owned(),
+            edad: 15,
+            tipo_animal: TipoAnimal::Gato,
+            propietario: Propietario {
+                nombre: "Pedro".to_owned(),
+                direccion: "17 y 52".to_owned(),
+                telefono: 726123,
+            },
+        };
+        vete.agregar_a_cola_de_atencion(mascota.clone());
+        vete.agregar_a_cola_de_atencion_prioridad(mascota_2.clone());
+        vete.atender_siguiente_mascota();
+        vete.registrar_atencion(
+            "Mala alimentacion".to_owned(),
+            "Mejor alimento".to_owned(),
+            Fecha::new(20, 06, 2025),
+        );
+        vete.eliminar_atencion(0);
+        assert!(
+            vete.registro_atenciones.len() == 0,
+            "No se elimino la atencion registrada como se esperaba"
         );
     }
 }

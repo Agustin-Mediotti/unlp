@@ -2,7 +2,7 @@ use time::{
     Duration, {Date, Month},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct Fecha {
     fecha: Date,
 }
