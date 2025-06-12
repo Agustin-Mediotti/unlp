@@ -411,6 +411,8 @@ mod tests {
         assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Clasic));
         user.downgrade_sub();
         assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Basic));
+        user.downgrade_sub();
+        assert_eq!(user.subscripcion.tipo, None);
     }
 
     #[test]
