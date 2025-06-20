@@ -84,6 +84,10 @@ impl App {
         }
     }
 
+    pub fn set_descuento_newsletter(&mut self, descuento: u32) {
+        self.descuento_newsletter = descuento;
+    }
+
     pub fn agregar_venta(&mut self, venta: Venta) {
         self.ventas.push(venta);
     }
@@ -288,19 +292,22 @@ mod tests {
 
     #[test]
     fn valida_calcular_precio_final_de_venta() {
-        let venta_cliente_con_sub = build_venta_con_sub();
-        let descuento_newsletter = 30.0;
+        let mut app = App::new();
+        app.agregar_venta(build_venta_con_sub());
+        app.set_descuento_newsletter(30);
 
-        assert!(venta_cliente_con_sub.cliente.esta_subscripto());
+        assert!(app.ventas[0].cliente.esta_subscripto());
         assert_eq!(
-            venta_cliente_con_sub.calcular_precio_final(descuento_newsletter, build_categorias()),
+            app.ventas[0]
+                .calcular_precio_final(app.descuento_newsletter as f64, build_categorias()),
             3486.00,
             "Deberia hacer el siguiente calculo correctamente ((5000 - 0.4% ) * 1) - 30%"
         );
 
-        let venta_cliente_sin_sub = build_venta_sin_sub();
+        app.agregar_venta(build_venta_sin_sub());
         assert_eq!(
-            venta_cliente_sin_sub.calcular_precio_final(descuento_newsletter, build_categorias()),
+            app.ventas[1]
+                .calcular_precio_final(app.descuento_newsletter as f64, build_categorias()),
             4980.00,
             "Deberia hacer el siguiente calculo correctamente ((5000 - 0.4% ) * 1)"
         );
