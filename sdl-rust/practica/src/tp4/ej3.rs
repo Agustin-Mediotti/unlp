@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use time::Date;
+use time::{Date, OffsetDateTime};
 
 struct App {
     usuarios: Vec<Usuario>,
@@ -36,7 +36,7 @@ impl App {
             .entry(TipoMedioDePago::from(&medio_de_pago))
             .or_insert(0) += 1;
 
-        let user = Usuario::new(subscripcion, medio_de_pago);
+        let user = Usuario::new(medio_de_pago, subscripcion);
         self.usuarios.push(user);
     }
 
@@ -51,8 +51,14 @@ impl App {
         let mut sub_mas_cont_subs_act: HashMap<TipoSubscripcion, u32> = HashMap::new();
 
         for usuario in &self.usuarios {
-            if usuario.subscripcion.tipo.is_some() {
-                if let Some(tipo) = &usuario.subscripcion.tipo {
+            if usuario
+                .subscripcion
+                .last()
+                .expect("expected sub")
+                .tipo
+                .is_some()
+            {
+                if let Some(tipo) = &usuario.subscripcion.last().expect("expected sub").tipo {
                     *sub_mas_cont_subs_act.entry(*tipo).or_insert(0) += 1;
                 }
                 let tipo_pago = TipoMedioDePago::from(&usuario.medio_de_pago);
@@ -102,6 +108,16 @@ enum TipoSubscripcion {
     Basic,
     Clasic,
     Super,
+}
+
+impl TipoSubscripcion {
+    pub fn config(&self) -> (f64, u8) {
+        match self {
+            TipoSubscripcion::Basic => (5.0, 3),
+            TipoSubscripcion::Clasic => (15.0, 12),
+            TipoSubscripcion::Super => (25.0, 24),
+        }
+    }
 }
 
 impl PartialEq for TipoSubscripcion {
@@ -231,6 +247,26 @@ struct Subscripcion {
     costo_mensual: f64,
     duracion: u8,
     tipo: Option<TipoSubscripcion>,
+    activa: bool,
+}
+
+impl Subscripcion {
+    pub fn new(tipo: Option<TipoSubscripcion>) -> Self {
+        let fecha_inicio = OffsetDateTime::now_utc().date();
+        let activa = tipo.is_some();
+        let (costo_mensual, duracion) = match &tipo {
+            Some(tipo) => tipo.config(),
+            None => (0.0, 0),
+        };
+
+        Subscripcion {
+            fecha_inicio,
+            costo_mensual,
+            duracion,
+            tipo,
+            activa,
+        }
+    }
 }
 
 impl PartialEq for Subscripcion {
@@ -244,7 +280,7 @@ impl PartialEq for Subscripcion {
 
 #[derive(Debug)]
 struct Usuario {
-    subscripcion: Subscripcion,
+    subscripcion: Vec<Subscripcion>,
     medio_de_pago: MedioDePago,
 }
 
@@ -255,41 +291,56 @@ impl PartialEq for Usuario {
 }
 
 impl Usuario {
-    fn new(subscripcion: Subscripcion, medio_de_pago: MedioDePago) -> Self {
+    fn new(medio_de_pago: MedioDePago, subscripcion: Subscripcion) -> Self {
         Usuario {
-            subscripcion,
+            subscripcion: vec![subscripcion],
             medio_de_pago,
         }
     }
 
     fn upgrade_sub(&mut self) {
-        match self.subscripcion.tipo {
-            Some(TipoSubscripcion::Basic) => {
-                self.subscripcion.tipo = Some(TipoSubscripcion::Clasic)
+        if let Some(subscripcion) = self.subscripcion.last_mut() {
+            match subscripcion.tipo {
+                Some(TipoSubscripcion::Basic) => {
+                    subscripcion.activa = false;
+                    self.subscripcion
+                        .push(Subscripcion::new(Some(TipoSubscripcion::Clasic)));
+                }
+                Some(TipoSubscripcion::Clasic) => {
+                    subscripcion.activa = false;
+                    self.subscripcion
+                        .push(Subscripcion::new(Some(TipoSubscripcion::Super)));
+                }
+                Some(TipoSubscripcion::Super) => (),
+                None => self
+                    .subscripcion
+                    .push(Subscripcion::new(Some(TipoSubscripcion::Basic))),
             }
-            Some(TipoSubscripcion::Clasic) => {
-                self.subscripcion.tipo = Some(TipoSubscripcion::Super)
-            }
-            Some(TipoSubscripcion::Super) => (),
-            None => (),
         }
     }
 
     fn downgrade_sub(&mut self) {
-        match self.subscripcion.tipo {
-            Some(TipoSubscripcion::Basic) => self.subscripcion.tipo = None,
-            Some(TipoSubscripcion::Clasic) => {
-                self.subscripcion.tipo = Some(TipoSubscripcion::Basic)
+        if let Some(subscripcion) = self.subscripcion.last_mut() {
+            match subscripcion.tipo {
+                Some(TipoSubscripcion::Basic) => {
+                    self.cancel_subscripcion();
+                }
+                Some(TipoSubscripcion::Clasic) => {
+                    subscripcion.activa = false;
+                    self.subscripcion
+                        .push(Subscripcion::new(Some(TipoSubscripcion::Basic)));
+                }
+                Some(TipoSubscripcion::Super) => subscripcion.tipo = Some(TipoSubscripcion::Clasic),
+                None => (),
             }
-            Some(TipoSubscripcion::Super) => {
-                self.subscripcion.tipo = Some(TipoSubscripcion::Clasic)
-            }
-            None => (),
         }
     }
 
     fn cancel_subscripcion(&mut self) {
-        self.subscripcion.tipo = None;
+        if let Some(sub) = self.subscripcion.last_mut() {
+            sub.activa = false;
+            self.subscripcion.push(Subscripcion::new(None));
+        }
     }
 }
 
@@ -298,34 +349,19 @@ mod tests {
     use super::*;
 
     fn build_fecha() -> Date {
-        Date::from_julian_day(2_458_485).expect("deberia devolver una fecha")
+        OffsetDateTime::now_utc().date()
     }
 
     fn build_subscripcion_basic() -> Subscripcion {
-        Subscripcion {
-            fecha_inicio: build_fecha(),
-            costo_mensual: 15.00,
-            duracion: 6,
-            tipo: Some(TipoSubscripcion::Basic),
-        }
+        Subscripcion::new(Some(TipoSubscripcion::Basic))
     }
 
     fn build_subscripcion_clasic() -> Subscripcion {
-        Subscripcion {
-            fecha_inicio: build_fecha(),
-            costo_mensual: 35.00,
-            duracion: 12,
-            tipo: Some(TipoSubscripcion::Clasic),
-        }
+        Subscripcion::new(Some(TipoSubscripcion::Clasic))
     }
 
     fn build_subscripcion_super() -> Subscripcion {
-        Subscripcion {
-            fecha_inicio: build_fecha(),
-            costo_mensual: 50.00,
-            duracion: 24,
-            tipo: Some(TipoSubscripcion::Super),
-        }
+        Subscripcion::new(Some(TipoSubscripcion::Super))
     }
 
     fn build_medio_de_pago_mp() -> MedioDePago {
@@ -353,17 +389,11 @@ mod tests {
     }
 
     fn build_usuario_basic() -> Usuario {
-        Usuario {
-            subscripcion: build_subscripcion_basic(),
-            medio_de_pago: MedioDePago::Efectivo,
-        }
+        Usuario::new(MedioDePago::Efectivo, build_subscripcion_basic())
     }
 
     fn build_usuario_super() -> Usuario {
-        Usuario {
-            subscripcion: build_subscripcion_super(),
-            medio_de_pago: MedioDePago::Efectivo,
-        }
+        Usuario::new(MedioDePago::Efectivo, build_subscripcion_super())
     }
 
     #[test]
@@ -377,7 +407,7 @@ mod tests {
 
         assert_eq!(app.usuarios.len(), 1);
         assert_eq!(app.usuarios[0], expect);
-        assert_eq!(app.usuarios[0].subscripcion, sub);
+        assert_eq!(app.usuarios[0].subscripcion.last(), Some(sub).as_ref());
         assert_eq!(app.usuarios[0].medio_de_pago, MedioDePago::Efectivo);
     }
 
@@ -390,29 +420,78 @@ mod tests {
         assert_eq!(app.usuarios.len(), 1);
 
         app.cancel_subscripcion(&usuario);
-        assert_eq!(app.usuarios[0].subscripcion.tipo, None);
+        assert_eq!(
+            app.usuarios[0]
+                .subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            None
+        );
     }
 
     #[test]
     fn verifica_upgrade_subscripcion() {
         let mut user = build_usuario_basic();
-        assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Basic));
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            Some(TipoSubscripcion::Basic)
+        );
         user.upgrade_sub();
-        assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Clasic));
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            Some(TipoSubscripcion::Clasic)
+        );
         user.upgrade_sub();
-        assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Super));
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            Some(TipoSubscripcion::Super)
+        );
     }
 
     #[test]
     fn verifica_downgrade_subscripcion() {
         let mut user = build_usuario_super();
-        assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Super));
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            Some(TipoSubscripcion::Super)
+        );
         user.downgrade_sub();
-        assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Clasic));
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            Some(TipoSubscripcion::Clasic)
+        );
         user.downgrade_sub();
-        assert_eq!(user.subscripcion.tipo, Some(TipoSubscripcion::Basic));
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            Some(TipoSubscripcion::Basic)
+        );
         user.downgrade_sub();
-        assert_eq!(user.subscripcion.tipo, None);
+        assert_eq!(
+            user.subscripcion
+                .last()
+                .expect("expected subscription")
+                .tipo,
+            None
+        );
     }
 
     #[test]
