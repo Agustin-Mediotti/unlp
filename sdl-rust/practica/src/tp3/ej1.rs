@@ -4,7 +4,6 @@ pub struct Persona {
     pub dir: Option<String>,
 }
 
-#[allow(dead_code)]
 impl Persona {
     pub fn new(nombre: String, edad: u8, dir: Option<String>) -> Persona {
         Persona { nombre, edad, dir }
@@ -25,5 +24,61 @@ impl Persona {
 
     pub fn actualizar_direccion(&mut self, nue_dir: String) {
         self.dir = Some(nue_dir);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn crea_nueva_persona_sin_direccion() {
+        let persona = Persona::new("Fausto".to_string(), 11, None);
+        assert_eq!(persona.nombre, "Fausto");
+        assert_eq!(persona.edad, 11);
+        assert_eq!(persona.dir, None);
+    }
+
+    #[test]
+    fn crea_nueva_persona_con_direccion() {
+        let persona = Persona::new(
+            "Fausto".to_string(),
+            11,
+            Some("Calle Falsa 123".to_string()),
+        );
+        assert_eq!(persona.nombre, "Fausto");
+        assert_eq!(persona.edad, 11);
+        assert_eq!(persona.dir, Some("Calle Falsa 123".to_string()));
+    }
+
+    #[test]
+    fn persona_to_string_con_direccion() {
+        let persona_to_string = Persona::new(
+            "Fausto".to_string(),
+            11,
+            Some("Calle Falsa 123".to_string()),
+        )
+        .to_string();
+
+        assert_eq!(persona_to_string, "Fausto, 11, Calle Falsa 123")
+    }
+
+    #[test]
+    fn obtener_edad_de_persona() {
+        let persona = Persona::new(
+            "Fausto".to_string(),
+            11,
+            Some("Calle Falsa 123".to_string()),
+        );
+
+        assert_eq!(persona.obtener_edad(), 11);
+    }
+
+    #[test]
+    fn actualizar_direccion_de_persona() {
+        let mut persona = Persona::new("Fausto".to_string(), 11, None);
+        persona.actualizar_direccion("Fausto, 11, Calle Falsa 123".to_string());
+
+        assert_eq!(persona.dir, Some("Fausto, 11, Calle Falsa 123".to_string()));
     }
 }

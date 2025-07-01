@@ -4,7 +4,6 @@ pub struct Examen {
     pub nota: u8,
 }
 
-#[allow(dead_code)]
 pub struct Informe {
     nombre: String,
     numero_ident: u64,
@@ -21,7 +20,6 @@ pub struct Estudiante {
     pub calificaciones: Vec<Examen>,
 }
 
-#[allow(dead_code)]
 impl Examen {
     pub fn new(nombre_materia: String, nota: u8) -> Self {
         Examen {
@@ -31,7 +29,6 @@ impl Examen {
     }
 }
 
-#[allow(dead_code)]
 impl Estudiante {
     pub fn new(nombre: String, numero_ident: u64, calificaciones: Vec<Examen>) -> Estudiante {
         Estudiante {
@@ -85,44 +82,49 @@ impl Estudiante {
     }
 }
 
-#[test]
-fn obtiene_promedio_correctamente() {
-    let mut calificaciones: Vec<Examen> = Vec::new();
-    calificaciones.push(Examen::new("Matemática".to_owned(), 8));
-    calificaciones.push(Examen::new("Historia".to_owned(), 10));
-    let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    assert_eq!(
-        estudiante.obtener_promedio(),
-        9.0,
-        "El promedio no se calculo como se esperaba"
-    );
-}
+    #[test]
+    fn obtiene_promedio_correctamente() {
+        let mut calificaciones: Vec<Examen> = Vec::new();
+        calificaciones.push(Examen::new("Matemática".to_owned(), 8));
+        calificaciones.push(Examen::new("Historia".to_owned(), 10));
+        let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
 
-#[test]
-fn obtiene_calificacion_mas_alta_correctamente() {
-    let mut calificaciones: Vec<Examen> = Vec::new();
-    calificaciones.push(Examen::new("Matemática".to_owned(), 8));
-    calificaciones.push(Examen::new("Historia".to_owned(), 10));
-    let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+        assert_eq!(
+            estudiante.obtener_promedio(),
+            9.0,
+            "El promedio no se calculo como se esperaba"
+        );
+    }
 
-    assert_eq!(
-        estudiante.obtener_calificacion_mas_alta(),
-        10,
-        "No se obtubo el elemento esperado"
-    );
-}
+    #[test]
+    fn obtiene_calificacion_mas_alta_correctamente() {
+        let mut calificaciones: Vec<Examen> = Vec::new();
+        calificaciones.push(Examen::new("Matemática".to_owned(), 8));
+        calificaciones.push(Examen::new("Historia".to_owned(), 10));
+        let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
 
-#[test]
-fn obtiene_calificacion_mas_baja_correctamente() {
-    let mut calificaciones: Vec<Examen> = Vec::new();
-    calificaciones.push(Examen::new("Matemática".to_owned(), 8));
-    calificaciones.push(Examen::new("Historia".to_owned(), 10));
-    let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+        assert_eq!(
+            estudiante.obtener_calificacion_mas_alta(),
+            10,
+            "No se obtubo el elemento esperado"
+        );
+    }
 
-    assert_eq!(
-        estudiante.obtener_calificacion_mas_baja(),
-        8,
-        "No se obtubo el elemento esperado"
-    );
+    #[test]
+    fn obtiene_calificacion_mas_baja_correctamente() {
+        let mut calificaciones: Vec<Examen> = Vec::new();
+        calificaciones.push(Examen::new("Matemática".to_owned(), 8));
+        calificaciones.push(Examen::new("Historia".to_owned(), 10));
+        let estudiante = Estudiante::new("Calamardo".to_owned(), 42, calificaciones);
+
+        assert_eq!(
+            estudiante.obtener_calificacion_mas_baja(),
+            8,
+            "No se obtubo el elemento esperado"
+        );
+    }
 }

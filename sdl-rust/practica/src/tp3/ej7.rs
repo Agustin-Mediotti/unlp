@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 #[derive(PartialEq, Debug, Clone)]
 pub enum ColorAuto {
     Rojo,
@@ -9,7 +8,6 @@ pub enum ColorAuto {
     Negro,
 }
 
-#[allow(dead_code)]
 #[derive(PartialEq, Debug, Clone)]
 pub struct Auto {
     pub marca: String,
@@ -19,7 +17,6 @@ pub struct Auto {
     pub color: ColorAuto,
 }
 
-#[allow(dead_code)]
 impl Auto {
     pub fn new(
         marca: String,
@@ -37,7 +34,6 @@ impl Auto {
         }
     }
 
-    #[allow(dead_code)]
     pub fn calcular_precio(&self) -> f64 {
         let mut total: f64 = self.precio_bruto;
         match self.color {
@@ -56,7 +52,6 @@ impl Auto {
     }
 }
 
-#[allow(dead_code)]
 #[derive(Debug, PartialEq)]
 pub struct ConcesionarioAuto {
     pub nombre: String,
@@ -65,7 +60,6 @@ pub struct ConcesionarioAuto {
     pub autos: Vec<Auto>,
 }
 
-#[allow(dead_code)]
 impl ConcesionarioAuto {
     pub fn new(nombre: String, direccion: String, capacidad_max: usize, autos: Vec<Auto>) -> Self {
         ConcesionarioAuto {
@@ -94,5 +88,117 @@ impl ConcesionarioAuto {
         } else {
             None
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn crea_nuevo_concesionario_auto_correctamente() {
+        assert_eq!(
+            ConcesionarioAuto::new(
+                "Concesionario 44".to_owned(),
+                "44 13 y 14".to_owned(),
+                5,
+                Vec::new()
+            ),
+            ConcesionarioAuto {
+                nombre: "Concesionario 44".to_owned(),
+                direccion: "44 13 y 14".to_owned(),
+                capacidad_max: 5,
+                autos: Vec::new()
+            },
+            "No se creo el objeto como se esperaba"
+        );
+    }
+
+    #[test]
+    fn agregar_auto_a_concesionario_correctamente() {
+        let mut conce = ConcesionarioAuto::new(
+            "Concesionario 44".to_owned(),
+            "44 13 y 14".to_owned(),
+            5,
+            Vec::new(),
+        );
+        conce.agregar_auto(Auto {
+            marca: "BMW".to_owned(),
+            modelo: "M3".to_owned(),
+            anio: 1995,
+            precio_bruto: 30_000.0,
+            color: ColorAuto::Rojo,
+        });
+        assert_eq!(
+            conce.autos.len(),
+            1,
+            "No se agrego el auto al concesionario como se esperaba"
+        );
+    }
+
+    #[test]
+    fn eliminar_auto_de_concesionario_correctamente() {
+        let auto = Auto {
+            marca: "BMW".to_owned(),
+            modelo: "M3".to_owned(),
+            anio: 1995,
+            precio_bruto: 30_000.0,
+            color: ColorAuto::Rojo,
+        };
+        let mut conce = ConcesionarioAuto::new(
+            "Concesionario 44".to_owned(),
+            "44 13 y 14".to_owned(),
+            5,
+            Vec::new(),
+        );
+        conce.agregar_auto(auto.clone());
+        assert_eq!(conce.autos.len(), 1,);
+        conce.eliminar_auto(auto);
+        assert_eq!(
+            conce.autos.len(),
+            0,
+            "No se elimino el auto al concesionario como se esperaba"
+        );
+    }
+
+    #[test]
+    fn buscar_auto_en_concesionario_correctamente() {
+        let auto = Auto {
+            marca: "BMW".to_owned(),
+            modelo: "M3".to_owned(),
+            anio: 1995,
+            precio_bruto: 30_000.0,
+            color: ColorAuto::Rojo,
+        };
+        let mut conce = ConcesionarioAuto::new(
+            "Concesionario 44".to_owned(),
+            "44 13 y 14".to_owned(),
+            5,
+            Vec::new(),
+        );
+        conce.agregar_auto(auto.clone());
+
+        assert_eq!(
+            conce.buscar_auto(auto.clone()),
+            Some(auto),
+            "No se encontro el auto en el concesionario como se esperaba"
+        );
+    }
+
+    #[test]
+    fn calcular_precio_de_auto_correctamente() {
+        let auto = Auto {
+            marca: "BMW".to_owned(),
+            modelo: "M3".to_owned(),
+            anio: 1995,
+            precio_bruto: 30_000.0,
+            color: ColorAuto::Rojo,
+        };
+
+        assert_eq!(
+            auto.calcular_precio(),
+            40_500.0,
+            "No se calculo el precio del auto como se esperaba"
+        );
     }
 }

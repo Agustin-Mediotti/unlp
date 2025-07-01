@@ -7,7 +7,6 @@ pub struct Fecha {
     fecha: Date,
 }
 
-#[allow(dead_code)]
 impl Fecha {
     pub fn new(dia: u8, mes: u8, anio: i32) -> Option<Self> {
         if Self::es_fecha_valida(dia, mes, anio) {
@@ -50,5 +49,54 @@ impl Fecha {
 
     pub fn es_mayor(&self, una_fecha: &Fecha) -> bool {
         self.fecha > una_fecha.fecha
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn crea_una_fecha_con_correctamente() {
+        assert!(Fecha::new(11, 09, 2001).is_some());
+        assert!(Fecha::new(31, 11, 2025).is_none());
+        assert!(Fecha::new(29, 2, 2023).is_none());
+    }
+
+    #[test]
+    fn verifica_fecha_valida() {
+        assert!(!Fecha::es_fecha_valida(29, 2, 2023));
+        assert!(!Fecha::es_fecha_valida(31, 11, 2025));
+        assert!(Fecha::es_fecha_valida(31, 12, 2025));
+    }
+
+    #[test]
+    fn verifica_fecha_bisiesto() {
+        assert!(
+            Fecha::new(29, 3, 2024)
+                .expect("Fecha incorrecta")
+                .es_bisiesto()
+        );
+        assert!(
+            !Fecha::new(19, 5, 2023)
+                .expect("Fecha incorrecta")
+                .es_bisiesto()
+        );
+    }
+
+    #[test]
+    fn verifica_sumar_dias_a_fecha() {
+        let mut fecha = Fecha::new(11, 09, 2001).unwrap();
+        fecha.sumar_dias(15);
+
+        assert_eq!(fecha, Fecha::new(26, 09, 2001).unwrap());
+    }
+
+    #[test]
+    fn verifica_restar_dias_a_fecha() {
+        let mut fecha = Fecha::new(11, 09, 2001).unwrap();
+        fecha.restar_dias(2);
+
+        assert_eq!(fecha, Fecha::new(09, 09, 2001).unwrap());
     }
 }
