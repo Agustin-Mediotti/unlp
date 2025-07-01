@@ -13,11 +13,11 @@ fn main() {
         "true" | "t" => {
             println!("{boolean} & true = {}", boolean & true);
             println!("{boolean} | true = {}", boolean | true);
-        },
+        }
         "false" | "f" => {
             println!("{boolean} & false = {}", boolean & false);
             println!("{boolean} | false = {}", boolean | false);
-        },
+        }
         _ => println!("{} is not a boolean", input.trim()),
     }
 }
