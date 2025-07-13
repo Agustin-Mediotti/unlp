@@ -264,7 +264,11 @@ fn verifica_edades() {
         [25, 35],
         "Debería devolver una lista con las edades de las personas en la lista"
     );
-    assert_eq!(edades(lista_vacia), [], "Debería devolver una lista vacía");
+    assert_eq!(
+        edades(lista_vacia),
+        Vec::<u8>::new(),
+        "Debería devolver una lista vacía"
+    );
 }
 
 #[test]
