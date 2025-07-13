@@ -16,3 +16,5 @@ cloned_repos/
 
 # Rust
 **target/
+**coverage/
+**tarpaulin-report.html
