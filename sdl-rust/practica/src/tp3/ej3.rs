@@ -1,8 +1,9 @@
+use serde::Serialize;
 use time::{
     Duration, {Date, Month},
 };
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Serialize)]
 pub struct Fecha {
     fecha: Date,
 }
