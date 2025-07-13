@@ -7,5 +7,5 @@ mod tp4;
 mod tp5;
 
 // Gerenar Reporte de Coverage:
-// $ cargo tarpaulin --out Lcov
-// $ genhtml lcov.info -o coverage-report
+// $ cargo tarpaulin --out Lcov && genhtml lcov.info -o coverage-report
+// $ cargo tarpaulin --target-dir src/coverage --skip-clean --out html

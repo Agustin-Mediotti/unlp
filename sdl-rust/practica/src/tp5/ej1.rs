@@ -1,6 +1,11 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
+use std::fs::File;
+use std::io::Write;
 
-#[derive(PartialEq, Debug, Clone)]
+const FILE_NAME: &str = "src/tp5/archivo_autos.json";
+
+#[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub enum ColorAuto {
     Rojo,
     Verde,
@@ -10,7 +15,7 @@ pub enum ColorAuto {
     Negro,
 }
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Auto {
     pub marca: String,
     pub modelo: String,
@@ -48,24 +53,18 @@ impl Auto {
     }
 }
 
-#[derive(Debug, PartialEq, Clone)]
-pub struct ErrorCapacidadMaxima(pub String);
-
-impl Display for ErrorCapacidadMaxima {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "No se puede agregar el auto, capacidad máxima alcanzada: {}",
-            self.0
-        )
-    }
-}
-
 #[derive(Debug, PartialEq)]
 pub enum ErrorConcecionaria {
-    ErrorCapacidadMaxima(ErrorCapacidadMaxima),
+    ErrorCapacidadMaxima(String),
     ErrorConcecionarioVacio,
     ErrorAutoNoEncontrado,
+    ErrorEscritura(String),
+}
+
+impl From<std::io::Error> for ErrorConcecionaria {
+    fn from(e: std::io::Error) -> Self {
+        ErrorConcecionaria::ErrorEscritura(e.to_string())
+    }
 }
 
 impl Display for ErrorConcecionaria {
@@ -78,11 +77,12 @@ impl Display for ErrorConcecionaria {
             ErrorConcecionaria::ErrorAutoNoEncontrado => {
                 write!(f, "El auto no se encontró en la concecionaria")
             }
+            ErrorConcecionaria::ErrorEscritura(e) => write!(f, "{e}"),
         }
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, serde::Serialize)]
 pub struct ConcesionarioAuto {
     pub nombre: String,
     pub direccion: String,
@@ -92,19 +92,35 @@ pub struct ConcesionarioAuto {
 
 impl ConcesionarioAuto {
     pub fn new(nombre: String, direccion: String, capacidad_max: usize, autos: Vec<Auto>) -> Self {
-        ConcesionarioAuto {
+        let mut file = File::create(FILE_NAME).unwrap();
+        let concecionaria = ConcesionarioAuto {
             nombre,
             direccion,
             capacidad_max,
             autos,
-        }
+        };
+        let buf = serde_json::to_string(&concecionaria).unwrap();
+        file.write_all(&buf.as_bytes())
+            .expect("error escribiendo el archivo");
+        concecionaria
     }
-    pub fn agregar_auto(&mut self, auto: Auto) -> Result<(), ErrorCapacidadMaxima> {
+
+    pub fn escribir_json(&self) -> Result<(), std::io::Error> {
+        let mut file = File::create(FILE_NAME)?;
+        let buf = serde_json::to_string(&self)?;
+        file.write_all(&buf.as_bytes())?;
+        Ok(())
+    }
+
+    pub fn agregar_auto(&mut self, auto: Auto) -> Result<(), ErrorConcecionaria> {
         if self.autos.len() < self.capacidad_max {
             self.autos.push(auto);
+            self.escribir_json()?;
             Ok(())
         } else {
-            Err(ErrorCapacidadMaxima(self.capacidad_max.to_string()))
+            Err(ErrorConcecionaria::ErrorCapacidadMaxima(
+                self.capacidad_max.to_string(),
+            ))
         }
     }
 
@@ -114,11 +130,13 @@ impl ConcesionarioAuto {
         }
         if let Some(pos) = self.autos.iter().position(|f| *f == auto) {
             self.autos.remove(pos);
-            Ok(())
+            self.escribir_json()?;
+            return Ok(());
         } else {
             Err(ErrorConcecionaria::ErrorAutoNoEncontrado)
         }
     }
+
     pub fn buscar_auto(&self, auto: Auto) -> Option<Auto> {
         if let Some(pos) = self.autos.iter().position(|f| *f == auto) {
             Some(self.autos[pos].clone())
@@ -234,7 +252,7 @@ mod tests {
                 precio_bruto: 30_000.0,
                 color: ColorAuto::Rojo,
             }),
-            Err(ErrorCapacidadMaxima("1".to_string())),
+            Err(ErrorConcecionaria::ErrorCapacidadMaxima("1".to_string())),
             "Se esperaba un error de capacidad 1"
         );
     }
