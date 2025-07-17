@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+mod ent;
 mod tp1;
 mod tp2;
 mod tp3;

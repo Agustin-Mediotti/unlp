@@ -149,6 +149,15 @@ pub struct Libro {
     pub genero: GeneroLibro,
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct ResultadoFiltro {
+    pub isbn: u32,
+    pub titulo: String,
+    pub fecha_vencimiento: Fecha,
+    pub fecha_devolucion: Option<Fecha>,
+    pub estado: EstadoPrestamo,
+}
+
 #[derive(PartialEq, Clone, Debug)]
 pub struct Cliente {
     pub id_cliente: String,
@@ -184,36 +193,31 @@ pub struct Prestamo {
 }
 
 impl Biblioteca {
+    /// # Recuperatorio Entregable 1: v2
     /// Dado un ID de cliente y un filtro de estado, devuelve la coleccion de préstamos de cliente segun estado indicado.
     pub fn get_historial_prestamos(
         &self,
         id_cliente: String,
         filtro_estado: FiltroEstadoPrestamo,
-    ) -> Vec<Prestamo> {
-        match filtro_estado {
-            FiltroEstadoPrestamo::Devuelto => self
-                .prestamos_efectuados
-                .iter()
-                .filter(|e| {
-                    e.cliente.id_cliente == id_cliente && e.estado == EstadoPrestamo::Devuelto
-                })
-                .cloned()
-                .collect(),
-            FiltroEstadoPrestamo::Prestamo => self
-                .prestamos_efectuados
-                .iter()
-                .filter(|e| {
-                    e.cliente.id_cliente == id_cliente && e.estado == EstadoPrestamo::Prestamo
-                })
-                .cloned()
-                .collect(),
-            FiltroEstadoPrestamo::Todos => self
-                .prestamos_efectuados
-                .iter()
-                .filter(|e| e.cliente.id_cliente == id_cliente)
-                .cloned()
-                .collect(),
-        }
+    ) -> Vec<ResultadoFiltro> {
+        self.prestamos_efectuados
+            .iter()
+            .filter(|e| {
+                e.cliente.id_cliente == id_cliente
+                    && match filtro_estado {
+                        FiltroEstadoPrestamo::Todos => true,
+                        FiltroEstadoPrestamo::Prestamo => e.estado == EstadoPrestamo::Prestamo,
+                        FiltroEstadoPrestamo::Devuelto => e.estado == EstadoPrestamo::Devuelto,
+                    }
+            })
+            .map(|e| ResultadoFiltro {
+                isbn: e.libro.isbn,
+                titulo: e.libro.titulo.clone(),
+                fecha_vencimiento: e.fecha_vencimiento,
+                fecha_devolucion: e.fecha_devolucion,
+                estado: e.estado.clone(),
+            })
+            .collect()
     }
 
     /// Genera una instacia de Biblioteca.
@@ -276,8 +280,8 @@ impl Biblioteca {
     }
 
     /// Dado un determinado cliente, realiza un prestamo de un libro cumpliendo lo siguiente:
-    /// El cliente no debe tener más de 5 prestamos en estado "EstadoPrestamo::Prestamo".
-    /// El registro de copias debe contener una copia a disposición.
+    /// - El cliente no debe tener más de 5 prestamos en estado "EstadoPrestamo::Prestamo".
+    /// - El registro de copias debe contener una copia a disposición.
     pub fn realizar_prestamo_a_cliente(&mut self, cliente: Cliente, libro: Libro) -> bool {
         if self
             .prestamos_efectuados
@@ -344,6 +348,7 @@ impl Biblioteca {
         }
     }
     /// Dado un Libro y un Cliente, se busca el prestamo y cambia de estado a "EstadoPrestamo::Devuelto".
+    ///
     /// Se incrementa la fecha de devolución y se incrementa la cantidad de copias a disposición.
     pub fn devolver_libro(&mut self, cliente: Cliente, libro: Libro) {
         if let Some(prestamo) = self
@@ -586,6 +591,30 @@ mod tests {
     #[test]
     fn get_historial_prestamos_correctamente() {
         let (mut biblio, cliente) = build_biblio_con_prestamos_devueltos();
-        biblio.generar_nuevo_cliente(cliente);
+        biblio.generar_nuevo_cliente(cliente.clone());
+
+        let historial_todos =
+            biblio.get_historial_prestamos(cliente.id_cliente.clone(), FiltroEstadoPrestamo::Todos);
+        assert_eq!(
+            historial_todos.len(),
+            3,
+            "Debe devolver todos los préstamos"
+        );
+
+        let historial_prestamo = biblio
+            .get_historial_prestamos(cliente.id_cliente.clone(), FiltroEstadoPrestamo::Prestamo);
+        assert_eq!(
+            historial_prestamo.len(),
+            2,
+            "Debe devolver solo los préstamos activos"
+        );
+
+        let historial_devuelto =
+            biblio.get_historial_prestamos(cliente.id_cliente, FiltroEstadoPrestamo::Devuelto);
+        assert_eq!(
+            historial_devuelto.len(),
+            1,
+            "Debe devolver solo los préstamos devueltos"
+        );
     }
 }
