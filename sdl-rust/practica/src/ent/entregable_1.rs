@@ -183,6 +183,11 @@ impl Cliente {
     }
 }
 
+#[derive(Debug, PartialEq)]
+pub enum ErroresContrato {
+    ClienteSinPrestamos,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Prestamo {
     pub libro: Libro,
@@ -195,12 +200,14 @@ pub struct Prestamo {
 impl Biblioteca {
     /// # Recuperatorio Entregable 1: v2
     /// Dado un ID de cliente y un filtro de estado, devuelve la coleccion de préstamos de cliente segun estado indicado.
+    /// Retorna un error si el cliente no tiene préstamos registrados.
     pub fn get_historial_prestamos(
         &self,
         id_cliente: String,
         filtro_estado: FiltroEstadoPrestamo,
-    ) -> Vec<ResultadoFiltro> {
-        self.prestamos_efectuados
+    ) -> Result<Vec<ResultadoFiltro>, ErroresContrato> {
+        let resultados: Vec<ResultadoFiltro> = self
+            .prestamos_efectuados
             .iter()
             .filter(|e| {
                 e.cliente.id_cliente == id_cliente
@@ -217,7 +224,13 @@ impl Biblioteca {
                 fecha_devolucion: e.fecha_devolucion,
                 estado: e.estado.clone(),
             })
-            .collect()
+            .collect();
+
+        if resultados.is_empty() {
+            Err(ErroresContrato::ClienteSinPrestamos)
+        } else {
+            Ok(resultados)
+        }
     }
 
     /// Genera una instacia de Biblioteca.
@@ -595,26 +608,53 @@ mod tests {
 
         let historial_todos =
             biblio.get_historial_prestamos(cliente.id_cliente.clone(), FiltroEstadoPrestamo::Todos);
+        assert!(
+            historial_todos.is_ok(),
+            "Debe devolver Ok para historial completo"
+        );
         assert_eq!(
-            historial_todos.len(),
+            historial_todos.unwrap().len(),
             3,
             "Debe devolver todos los préstamos"
         );
 
         let historial_prestamo = biblio
             .get_historial_prestamos(cliente.id_cliente.clone(), FiltroEstadoPrestamo::Prestamo);
+        assert!(
+            historial_prestamo.is_ok(),
+            "Debe devolver Ok para historial en préstamo"
+        );
         assert_eq!(
-            historial_prestamo.len(),
+            historial_prestamo.unwrap().len(),
             2,
             "Debe devolver solo los préstamos activos"
         );
 
-        let historial_devuelto =
-            biblio.get_historial_prestamos(cliente.id_cliente, FiltroEstadoPrestamo::Devuelto);
+        let historial_devuelto = biblio
+            .get_historial_prestamos(cliente.id_cliente.clone(), FiltroEstadoPrestamo::Devuelto);
+        assert!(
+            historial_devuelto.is_ok(),
+            "Debe devolver Ok para historial devuelto"
+        );
         assert_eq!(
-            historial_devuelto.len(),
+            historial_devuelto.unwrap().len(),
             1,
             "Debe devolver solo los préstamos devueltos"
         );
+    }
+
+    #[test]
+    fn get_historial_prestamos_vacio_para_cliente_sin_prestamos() {
+        let mut biblio = build_biblio();
+        let cliente = build_cliente();
+        biblio.generar_nuevo_cliente(cliente.clone());
+
+        let resultado =
+            biblio.get_historial_prestamos(cliente.id_cliente.clone(), FiltroEstadoPrestamo::Todos);
+        assert!(
+            resultado.is_err(),
+            "Debe devolver Err si el cliente no tiene préstamos"
+        );
+        assert_eq!(resultado.unwrap_err(), ErroresContrato::ClienteSinPrestamos);
     }
 }
