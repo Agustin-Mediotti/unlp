@@ -231,3 +231,9 @@ poder hacer una compra. **Los pagos se aceptarán sólo en línea** con una tarj
 | 2 min           | ¿Hay alguna preocupación específica sobre el cambio del correo tradicional al mundo digital?               | Identificar resistencias o temores            |                            |
 
 *Tiempo total estimado: 85 minutos*
+
+# Cuestionarios
+
+1. Mediante cuestionarios se busca recabar requerimientos, recolectar hechos de un gran número de personas, detectar un sentimiento generalizado, detectar problemas entre usuarios o cuantificar respuestas.
+2. Considero apropiado utilizar cuestionarios cuando las personas están dispersas geográficamente, cuando hay muchas personas involucradas, caundo queremos obtener opinines generales p queremos identificar problemas generales.
+3. Los cuestionarios pueden tener dos tipos de preguntas: **abiertas**: son las que dejan abietas todas las posibles opciones de respuesta; **cerradas**: son las que limitan o cierran las opciones de respuestas disponibles.
