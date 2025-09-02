@@ -6,9 +6,7 @@ public class Balanza {
     private double pesoTotal;
 
     public Balanza() {
-        this.cantidadDeProductos = 0;
-        this.pesoTotal = 0;
-        this.precioTotal = 0;
+        this.ponerEnCero();
     }
 
     public void ponerEnCero() {
@@ -18,6 +16,9 @@ public class Balanza {
     }
 
     public void agregarProducto(Producto producto) {
+        if (producto == null) {
+            throw new IllegalArgumentException("El producto no puede ser null");
+        }
         this.pesoTotal += producto.getPeso();
         this.precioTotal += producto.getPrecio();
         this.cantidadDeProductos++;
@@ -27,19 +28,7 @@ public class Balanza {
         return new Ticket(this.cantidadDeProductos, this.precioTotal, this.pesoTotal);
     }
 
-    // Getters & Setters
-
-    public void setCantidadDeProductos(int cant) {
-        this.cantidadDeProductos = cant;
-    }
-
-    public void setPrecioTotal(double precio) {
-        this.precioTotal = precio;
-    }
-
-    public void setPesoTotal(double peso) {
-        this.pesoTotal = peso;
-    }
+    // Getters
 
     public int getCantidadDeProductos() {
         return this.cantidadDeProductos;

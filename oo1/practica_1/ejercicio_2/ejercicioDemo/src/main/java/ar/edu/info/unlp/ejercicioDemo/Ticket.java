@@ -19,17 +19,7 @@ public class Ticket {
         return this.precioTotal * 0.21;
     }
 
-    public void setCantidadDeProductos(int cantidad) {
-        this.cantidadDeProductos = cantidad;
-    }
-
-    public void setPesoTotal(double peso) {
-        this.pesoTotal = peso;
-    }
-
-    public void setPrecioTotal(double precio) {
-        this.precioTotal = precio;
-    }
+    // Getters
 
     public int getCantidadDeProductos() {
         return this.cantidadDeProductos;
