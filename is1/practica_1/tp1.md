@@ -234,6 +234,14 @@ poder hacer una compra. **Los pagos se aceptarán sólo en línea** con una tarj
 
 # Cuestionarios
 
+## Definiciones
+
 1. Mediante cuestionarios se busca recabar requerimientos, recolectar hechos de un gran número de personas, detectar un sentimiento generalizado, detectar problemas entre usuarios o cuantificar respuestas.
 2. Considero apropiado utilizar cuestionarios cuando las personas están dispersas geográficamente, cuando hay muchas personas involucradas, caundo queremos obtener opinines generales p queremos identificar problemas generales.
 3. Los cuestionarios pueden tener dos tipos de preguntas: **abiertas**: son las que dejan abietas todas las posibles opciones de respuesta; **cerradas**: son las que limitan o cierran las opciones de respuestas disponibles.
+
+## Situaciones
+
+**Situación 1**
+
+Es necesario reescribir las preguntas, porque hacen suposiciones y contiene preguntas irrelevantes.
