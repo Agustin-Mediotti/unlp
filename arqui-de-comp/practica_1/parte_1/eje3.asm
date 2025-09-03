@@ -1,18 +1,11 @@
-ORG 500h
-        letra_mayus db 'A'
+; Convertir el caracter de mayúscula a minuscula
+; Autor: Agustin Mediotti
+; Fecha: 03-09-2025
 
-ORG 3000h
-;  Subrutina a_minus
-; ENTRADA:
-;  cl, caracter ASCII en nayusculas
-; SALIDA:
-;  cl: caracter ASCII en minuscula
-a_minus:
-      OR cl, 00100000b  ; mascara 20h
-      RET
+ORG 1000h
+      C   db 'C'
 
 ORG 2000h
-        MOV cl, letra_mayus
-        CALL a_minus
-        int 0
+      OR C, 00100000b
+      INT 0
 END
