@@ -1,0 +1,10 @@
+| Instruccion | Registro SP |  AX   |  BX   |
+| :---------: | :---------: | :---: | :---: |
+|  mov ax,5   |    8000h    | 0005  |  ??   |
+|  mov bx,3   |    8000h    | 0005  | 0003  |
+|   push ax   |    7FFEh    | 0005  | 0003  |
+|   push ax   |    7FFCh    | 0005  | 0003  |
+|   push bx   |    7FFAh    | 0005  | 0003  |
+|   pop bx    |    7FFCh    | 0005  | 0003  |
+|   pop bx    |    7FFEh    | 0005  | 0005  |
+|   pop ax    |    8000h    | 0005  | 0005  |
