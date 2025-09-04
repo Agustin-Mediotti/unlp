@@ -16,7 +16,8 @@ ORG 2000h
       CMP bl, 41h
       JC  FIN
       CMP bl, 5Ah
+      JZ ES
       JNC FIN
-      MOV RES, 0FFh
+ES:   MOV RES, 0FFh
 FIN:  INT 0
 END
