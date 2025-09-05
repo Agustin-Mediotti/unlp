@@ -9,21 +9,17 @@ ORG 1000h
 ORG 3000h
 ; Multiplica dos numeros de 8 bits
 ; Recibe:
-;   [SP+8]: primer numero
-;   [SP+10]: segundo numero
+;   [AX]: direccion del primer numero
+;   [BX]: direccion del segundo numero
 ; Devuelve:
 ;   AX: resultado de la multiplicacion por valor
 MUL:    PUSH bx
         PUSH dx
         PUSH cx
-        MOV bx, sp
-        ADD bx, 10
-        MOV bx, [bx]
+        MOV cx, [bx]
+        MOV bx, ax
         MOV al, [bx]
-        MOV bx, sp
-        ADD bx, 8
-        MOV bx, [bx]
-        MOV ah, [bx]
+        MOV ah, cl
         CMP al, 0
         JZ ZERO
         CMP ah, 0
@@ -44,13 +40,9 @@ BACK:   POP cx
         RET
 
 ORG 2000h
-        MOV bx, offset A
-        PUSH bx
+        MOV ax, offset A
         MOV bx, offset B
-        PUSH bx
         CALL MUL
-        POP bx
-        POP bx
         MOV RES, ax
         INT 0
 END
