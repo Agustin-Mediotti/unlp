@@ -9,10 +9,10 @@ ORG 1000h
 ORG 3000h
 ; Multiplica dos numeros de 8 bits
 ; Recibe:
-;   [SP+8]: primer numero
-;   [SP+10]: segundo numero
+;   AL: primer numero
+;   AH: segundo numero
 ; Devuelve:
-;   AX: resultado de la multiplicacion por valor
+;   AX: resultado de la multiplicacion por refencia
 MUL:    PUSH bx
         PUSH dx
         PUSH cx
