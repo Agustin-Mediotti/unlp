@@ -32,19 +32,11 @@ public class Balanza {
     }
 
     public double getPrecioTotal() {
-        double total = 0;
-        for (Producto producto : productos) {
-            total += producto.getPrecio();
-        }
-        return total;
+        return this.productos.stream().mapToDouble(producto->producto.getPrecio()).sum();
     }
 
     public double getPesoTotal() {
-        double total = 0;
-        for (Producto producto : productos) {
-            total += producto.getPeso();
-        }
-        return total;
+        return this.productos.stream().mapToDouble(producto->producto.getPeso()).sum();
     }
 
     public List<Producto> getProductos() {
