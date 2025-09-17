@@ -21,15 +21,7 @@ public class Presupuesto {
     }
 
     public double calcularTotal() {
-        if (this.items == null) {
-            return 0;
-        }
-
-        double total = 0;
-        for (Item item : this.items) {
-            total += item.costo();
-        }
-        return total;
+        return this.items.stream().mapToDouble(item->item.costo()).sum();
     }
 
     public String getCliente() {
