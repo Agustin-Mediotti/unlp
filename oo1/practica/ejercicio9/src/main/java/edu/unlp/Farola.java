@@ -1,5 +1,6 @@
 package edu.unlp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Farola {
@@ -9,6 +10,7 @@ public class Farola {
 
     public Farola() {
         this.estado = false;
+        this.neightbors = new ArrayList<Farola>();
     }
 
     public List<Farola> getNeighbors() {
@@ -20,7 +22,7 @@ public class Farola {
     }
 
     public boolean isOff() {
-        return estado;
+        return !estado;
     }
 
     public void turnOn() {
@@ -37,8 +39,18 @@ public class Farola {
         }
     }
 
+    public boolean isNeightbor(Farola farola) {
+        for(Farola element : this.neightbors) {
+            if (element == farola) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void pairWithNeighbor(Farola otraFarola) {
         this.neightbors.add(otraFarola);
+        if (!otraFarola.isNeightbor(this)) otraFarola.pairWithNeighbor(this);
     }
 
 }
