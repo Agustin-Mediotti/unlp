@@ -1,6 +1,6 @@
 package edu.unlp;
 
-public class Cuadrado extends Figura2D {
+public class Cuadrado implements Figura2D {
     private double lado;
 
     public Cuadrado() {

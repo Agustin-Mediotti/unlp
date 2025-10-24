@@ -1,6 +1,6 @@
 package edu.unlp;
 
-public class Circulo extends Figura2D {
+public class Circulo implements Figura2D {
     private double radio;
 
     public Circulo() {

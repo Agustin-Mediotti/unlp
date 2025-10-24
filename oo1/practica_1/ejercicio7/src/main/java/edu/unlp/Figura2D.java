@@ -1,6 +1,6 @@
 package edu.unlp;
 
-public abstract class Figura2D {
-    public abstract double getArea();
-    public abstract double getPerimetro();
+public interface Figura2D {
+    public double getArea();
+    public double getPerimetro();
 }
