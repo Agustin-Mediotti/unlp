@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pnml xmlns="http://www.informatik.hu-berlin.de/top/pnml/ptNetb">
+  <declaration>
+    <structure>
+      <declarations>
+        <namedsort id="dot" name="dot">
+          <dot/>
+        </namedsort>
+      </declarations>
+    </structure>
+  </declaration>
+  <net active="true" id="TAPN1" type="P/T net">
+    <labels border="true" height="506" positionX="30" positionY="540" width="551">Ejercicio 1. Fábrica de papas bastón crudas. 
+Las papas llegan de a una y se depositan en un contenedor común. El primer paso es pasar la papa por una máquina que 
+quita  la  cáscara.  Esta  máquina  solo  puede  atender  a  una  papa  a  la  vez.  Las  papas  peladas  son  depositadas  en  un 
+contenedor común a la espera de la próxima etapa. La cáscara por su parte, es depositada en un basurero general. 
+Luego, cada papa cruda debe ser cortada. Para esto, la papa pasa por una máquina que corta las papas en 9 bastones. 
+Esta  máquina  solo  puede  procesar  una  papa a la vez. Una vez cortados, los bastones de papas son agrupados de a 10 
+para  ser  envasados.  Esto  lo  realiza  una  máquina  que  s</labels>
+    <place displayName="true" id="P0" initialMarking="0" invariant="&lt; inf" name="P0" nameOffsetX="0" nameOffsetY="0" positionX="120" positionY="240">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P1" initialMarking="1" invariant="&lt; inf" name="P1" nameOffsetX="0" nameOffsetY="0" positionX="300" positionY="180">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'dot</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="dot"/>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+    </place>
+    <place displayName="true" id="P2" initialMarking="0" invariant="&lt; inf" name="P2" nameOffsetX="0" nameOffsetY="0" positionX="300" positionY="240">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P3" initialMarking="0" invariant="&lt; inf" name="P3" nameOffsetX="0" nameOffsetY="0" positionX="480" positionY="150">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P4" initialMarking="0" invariant="&lt; inf" name="P4" nameOffsetX="0" nameOffsetY="0" positionX="480" positionY="300">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P5" initialMarking="1" invariant="&lt; inf" name="P5" nameOffsetX="0" nameOffsetY="0" positionX="630" positionY="240">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'dot</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="dot"/>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+    </place>
+    <place displayName="true" id="P6" initialMarking="0" invariant="&lt; inf" name="P6" nameOffsetX="0" nameOffsetY="0" positionX="630" positionY="300">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P7" initialMarking="0" invariant="&lt; inf" name="P7" nameOffsetX="0" nameOffsetY="0" positionX="810" positionY="300">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P8" initialMarking="0" invariant="&lt; inf" name="P8" nameOffsetX="0" nameOffsetY="0" positionX="960" positionY="300">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+    </place>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T0" infiniteServer="false" name="T0" nameOffsetX="0" nameOffsetY="0" player="0" positionX="30" positionY="240" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T1" infiniteServer="false" name="T1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="210" positionY="240" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T4" infiniteServer="false" name="T4" nameOffsetX="0" nameOffsetY="0" player="0" positionX="390" positionY="240" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T5" infiniteServer="false" name="T5" nameOffsetX="0" nameOffsetY="0" player="0" positionX="540" positionY="300" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T7" infiniteServer="false" name="T7" nameOffsetX="0" nameOffsetY="0" player="0" positionX="720" positionY="300" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T8" infiniteServer="false" name="T8" nameOffsetX="0" nameOffsetY="0" player="0" positionX="870" positionY="300" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <arc id="A0" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T1" target="P2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="230" yCoord="260"/>
+      <arcpath arcPointType="false" id="1" xCoord="300" yCoord="256"/>
+    </arc>
+    <arc id="A1" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P2" target="T4" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="330" yCoord="256"/>
+      <arcpath arcPointType="false" id="1" xCoord="400" yCoord="261"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P1" target="T1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="302" yCoord="203"/>
+      <arcpath arcPointType="false" id="1" xCoord="230" yCoord="250"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T4" target="P1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="400" yCoord="251"/>
+      <arcpath arcPointType="false" id="1" xCoord="328" yCoord="203"/>
+    </arc>
+    <arc id="A4" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T0" target="P0" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="50" yCoord="255"/>
+      <arcpath arcPointType="false" id="1" xCoord="120" yCoord="255"/>
+    </arc>
+    <arc id="A5" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P0" target="T1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="150" yCoord="255"/>
+      <arcpath arcPointType="false" id="1" xCoord="220" yCoord="256"/>
+    </arc>
+    <arc id="A6" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T4" target="P3" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="410" yCoord="250"/>
+      <arcpath arcPointType="false" id="1" xCoord="484" yCoord="176"/>
+    </arc>
+    <arc id="A7" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T4" target="P4" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="410" yCoord="260"/>
+      <arcpath arcPointType="false" id="1" xCoord="482" yCoord="307"/>
+    </arc>
+    <arc id="A8" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P4" target="T5" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="510" yCoord="315"/>
+      <arcpath arcPointType="false" id="1" xCoord="550" yCoord="316"/>
+    </arc>
+    <arc id="A9" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P5" target="T5" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="632" yCoord="263"/>
+      <arcpath arcPointType="false" id="1" xCoord="560" yCoord="310"/>
+    </arc>
+    <arc id="A10" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T5" target="P6" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="560" yCoord="320"/>
+      <arcpath arcPointType="false" id="1" xCoord="630" yCoord="316"/>
+    </arc>
+    <arc id="A11" inscription="[0,inf)" nameOffsetX="12" nameOffsetY="0" source="P6" target="T7" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="660" yCoord="316"/>
+      <arcpath arcPointType="false" id="1" xCoord="730" yCoord="321"/>
+    </arc>
+    <arc id="A12" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T7" target="P5" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="730" yCoord="311"/>
+      <arcpath arcPointType="false" id="1" xCoord="658" yCoord="263"/>
+    </arc>
+    <arc id="A13" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T7" target="P7" type="normal" weight="10">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="740" yCoord="315"/>
+      <arcpath arcPointType="false" id="1" xCoord="810" yCoord="315"/>
+    </arc>
+    <arc id="A14" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P7" target="T8" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="840" yCoord="315"/>
+      <arcpath arcPointType="false" id="1" xCoord="880" yCoord="316"/>
+    </arc>
+    <arc id="A15" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T8" target="P8" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="890" yCoord="315"/>
+      <arcpath arcPointType="false" id="1" xCoord="960" yCoord="315"/>
+    </arc>
+  </net>
+  <feature isColored="false" isGame="false" isStochastic="false" isTimed="false"/>
+</pnml>
