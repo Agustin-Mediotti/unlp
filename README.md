@@ -20,7 +20,7 @@
 </pre> -->
 
 <p align="center">
-  <img margin="25" width="482" height="136" alt="unlp_informatica_logo" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.info.unlp.edu.ar%2Fwp-content%2Fuploads%2F2019%2F05%2Flogo-info.png&f=1&nofb=1&ipt=12a115e80c4deebff930e96a7e8ecea5ff365df626d6d780387a9d7868604ef7" />
+  <img margin="25" width="700"   alt="unlp_informatica_logo" src="https://postgrado.info.unlp.edu.ar/wp-content/uploads/2023/10/Logo-Inform%C3%A1tica-web-UNLP-vector-01.png" />
 </p>
 
 <!-- Repositorio Académico - Agustin Mediotti -->
