@@ -71,7 +71,7 @@ Debido a que las operaciones de lectura/escritura sobre disco tienen una velocid
 - *Baja*: Quitar información del archivo.
 
 ## Archivos -> Corte de Control
-El proceso mediante el cuál la información de un archivo es procesada y presentada de forma organizada de acuerdo a la estructura que tiene un archivo.
+El proceso mediante el cuál la información de un archivo es procesada y presentada de forma organizada de acuerdo a la estructura que tiene un archivo. En general es para **informar** datos.
 
 ## Archivos -> Actualizacion Maestro Detalle
 Los elementos del detalle **SI O SI** son parte del maestro, por lo tanto podemos leer el maestro sin la necesidad de preguntar si el índice del maestro es **EOF**
