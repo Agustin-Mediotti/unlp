@@ -21,14 +21,12 @@ Begin
        empleado.codigo_empleado:= VALOR_ALTO;
 End;
 
-Procedure ProcesarArchivo(Var comisiones : comisiones_f);
+Procedure ProcesarArchivo(Var comisiones : comisiones_f, Var comisiones_compacto : comisiones_f);
 Var
-   comisiones_compacto : comisiones_f;
    empleado_actual     : comision;
    empleado_total      : comision;
 
 Begin
-   rewrite(comisiones_compacto);
    Leer(comisiones, empleado_actual);
    While(empleado_actual.codigo_empleado <> VALOR_ALTO) Do
       Begin
@@ -44,11 +42,12 @@ Begin
 End;
 
 Var
-   comisiones : comisiones_f;
+   comisiones, comisiones_compacto : comisiones_f;
 
 Begin
    assign(comisiones, ARCHIVO_COMISIONES);
    reset(comisiones);
-   ProcesarArchivo(comisiones);
+   rewrite(comisiones_compacto);
+   ProcesarArchivo(comisiones, comisiones_compacto);
    close(comisiones);
 End.
