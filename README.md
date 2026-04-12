@@ -26,8 +26,9 @@
 <!-- Repositorio Académico - Agustin Mediotti -->
 
 ## Módulos
-- [SI106 - CADP](cadp/)
+- [SI106 - Conceptos de Algoritmos, Datos y Programas](cadp/)
 - [SI104 - Organización de Computadoras](oc/)
+- [SI101 - Matemática 1](m1)
 - [SI107 - Taller de Programación](tp/)
 - [SI105 - Arquitectura de Computadoras](ac/)
 - [SI209 - Fundamentos de Organización de Datos](fod/)
